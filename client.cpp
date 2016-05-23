@@ -82,8 +82,10 @@ void Client::run(){
 			recv(server, recvBuffer,BUFSIZE,0);
 			/* recvBuffer must be "Game Start" */
 			cout << recvBuffer << endl;
-			printPlayerList();
-			printShopList();
+			int t;
+			recv(server,&t,sizeof(int),0);
+			number = t;
+			
 			playGame();
 		}
 		else if(command == 3){
@@ -131,22 +133,31 @@ void Client::printHandList(){
 }
 
 void Client::playGame(){
-	recv(server,&turn,sizeof(int),0);
-	recv(server, recvBuffer,BUFSIZE,0);
-	cout << recvBuffer << endl;
-	printHandList();
-	if(turn == number){
-		printCommand();
-	}
-	else{
-		cout << "Wait until other's turn end..." << endl;
+	while(1){
+		recv(server,&turn,sizeof(int),0);
+		recv(server, recvBuffer,BUFSIZE,0);
+		//cout << turn << ", " << number << ", " << recvBuffer << endl;
+		printPlayerList();
+		printShopList();
+		printHandList();
+		if(turn == number){
+			printCommand();
+		}
+		else{
+			cout << "Wait until other's turn end..." << endl;
+			recv(server,&turn,sizeof(int),0);
+		}
+		
 	}
 }
 
 void Client::printCommand(){
 	int state;
+	//cout << "in printCommand" << endl;
 	recv(server,&state,sizeof(int),0);
+	//cout << "in printCommand after recv" << endl;
 	if(state == ACTIONSTATE){
+		//cout << "in printCommand ACTIONSTATE" << endl;
 	}
 	else{
 		int money, buyCount, choose, result;
@@ -163,9 +174,13 @@ void Client::printCommand(){
 			}
 			else{
 				recv(server,&result,sizeof(int),0);
+				if(result == 1){
+					--buyCount;
+				}
 			}
 		}
 		while(buyCount > 0);
+		cout << "Turn end" << endl;
 	}
 }
 int main(){

@@ -44,23 +44,32 @@ void Simulation::subRun(int pos){
 	
 	send(client[pos],buffer[pos],BUFSIZE,0);
 	while(state == 1);
-	sendPlayerList(pos);
-	sendShopList(pos);
+	send(client[pos],&pos,sizeof(int),0);
+	//sendPlayerList(pos);
+	//sendShopList(pos);
 	while(state == 2);
+	player[pos].initTurn();
 	while(1){
-		player[pos].initTurn();
 		if(turn == pos){
 			int temp = turn;
 			strcpy(buffer[pos],"Your Turn!");
+			//cout << "case1 : " << temp << ", " << pos << ", " << buffer[pos] << endl;
 			//cout << "------------" << endl;
 			//player[pos].printHand();
 			//cout << "------------" << endl;
-			send(client[pos],&turn,sizeof(int),0);
+			send(client[pos],&temp,sizeof(int),0);
 			send(client[pos],buffer[pos],BUFSIZE,0);
+			sendPlayerList(pos);
+			sendShopList(pos);
 			sendHandList(pos);
 			int state = player[pos].getState();
-			send(client[pos],&state,sizeof(int),0);
+			//cout << "after assign state" << endl;
+			
+			if(state == ACTIONSTATE){
+				send(client[pos],&state,sizeof(int),0);
+			}
 			if(state == BUYSTATE){
+				send(client[pos],&state,sizeof(int),0);
 				int money = player[pos].getMoney();
 				int buyCount = player[pos].getBuy();
 				int choose, result;
@@ -72,6 +81,7 @@ void Simulation::subRun(int pos){
 						break;
 					}
 					else{
+						choose--;
 						if(money >= shop.getCardCost(choose) && shop.getCardRemain(choose) > 0){
 							player[pos].gainCard(shop.getCardName(choose), 1, DISCARD);
 							money -= shop.getCardCost(choose);
@@ -85,15 +95,23 @@ void Simulation::subRun(int pos){
 						send(client[pos],&result,sizeof(int),0);
 					}
 				}
+				cout << "Turn end" << endl;
 				turn = (turn + 1) % number;
 			}
+			player[pos].initTurn();
 		}
 		else{
 			int len = sprintf(buffer[pos],"%s's Turn!",player[turn].getName().c_str());
 			int temp = turn;
-			send(client[pos],&turn,sizeof(int),0);
+			//cout << "case2 : " << temp << ", " << pos << ", " << buffer[pos] << endl;
+			send(client[pos],&temp,sizeof(int),0);
 			send(client[pos],buffer[pos],BUFSIZE,0);
+			sendPlayerList(pos);
+			sendShopList(pos);
 			sendHandList(pos);
+			while(turn != pos);
+			//cout << "AFTER WHILE" << endl;
+			send(client[pos],&turn,sizeof(int),0);
 		}
 	}
 }

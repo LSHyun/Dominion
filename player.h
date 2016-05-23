@@ -41,4 +41,5 @@ public:
 	int getBuy();
 	void initTurn();
 	void shuffle();
+	void discardHand();
 };

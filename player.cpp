@@ -6,6 +6,7 @@ void Player::initTurn(){
 	action = 1;
 	buy = 1;
 	coin = 0;
+	discardHand();
 	revealDeck(ANY,5,HAND,DISCARD);
 }
 
@@ -70,7 +71,19 @@ void Player::gainCard(cardType type, int count, int price, place dest) {
 };
 
 int Player::discardCard(int count){
-	return 0;
+	int result = 0;
+	for(int i=0;i<count;i++){
+		if(hand.size() != 0){
+			Card card = hand.front();
+			discard.push_back(card);
+			hand.pop_front();
+			++result;
+		}
+		else{
+			break;
+		}
+	}
+	return result;
 };
 void Player::setName(string _name){
 	name = _name;
@@ -154,3 +167,8 @@ void Player::shuffle(){
 		discard.pop_front();
 	}
 };
+
+void Player::discardHand(){
+	int temp = discardCard(hand.size());
+};
+		
