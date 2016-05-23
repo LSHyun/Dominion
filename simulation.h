@@ -36,4 +36,5 @@ public:
 	void sendPlayerList(int pos);
 	void sendShopList(int pos);
 	void initPlayerCard(int pos);
+	void sendHandList(int pos);
 };

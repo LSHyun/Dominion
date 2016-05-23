@@ -41,23 +41,59 @@ void Simulation::mainRun(){
 void Simulation::subRun(int pos){
 	while(state == 0);
 	cout << "SubRun start " << pos << endl;
-	player[pos].revealDeck(ANY,5,HAND,DISCARD);
+	
 	send(client[pos],buffer[pos],BUFSIZE,0);
 	while(state == 1);
 	sendPlayerList(pos);
 	sendShopList(pos);
 	while(state == 2);
 	while(1){
+		player[pos].initTurn();
 		if(turn == pos){
+			int temp = turn;
 			strcpy(buffer[pos],"Your Turn!");
 			//cout << "------------" << endl;
 			//player[pos].printHand();
 			//cout << "------------" << endl;
+			send(client[pos],&turn,sizeof(int),0);
 			send(client[pos],buffer[pos],BUFSIZE,0);
+			sendHandList(pos);
+			int state = player[pos].getState();
+			send(client[pos],&state,sizeof(int),0);
+			if(state == BUYSTATE){
+				int money = player[pos].getMoney();
+				int buyCount = player[pos].getBuy();
+				int choose, result;
+				while(buyCount > 0){
+					send(client[pos],&money,sizeof(int),0);
+					send(client[pos],&buyCount,sizeof(int),0);
+					recv(client[pos],&choose,sizeof(int),0);
+					if(choose == 0){ // turn end
+						break;
+					}
+					else{
+						if(money >= shop.getCardCost(choose) && shop.getCardRemain(choose) > 0){
+							player[pos].gainCard(shop.getCardName(choose), 1, DISCARD);
+							money -= shop.getCardCost(choose);
+							buyCount -= 1;
+							shop.updateCardRemain(choose,-1);
+							result = 1;
+						}
+						else{
+							result = 0;
+						}
+						send(client[pos],&result,sizeof(int),0);
+					}
+				}
+				turn = (turn + 1) % number;
+			}
 		}
 		else{
 			int len = sprintf(buffer[pos],"%s's Turn!",player[turn].getName().c_str());
+			int temp = turn;
+			send(client[pos],&turn,sizeof(int),0);
 			send(client[pos],buffer[pos],BUFSIZE,0);
+			sendHandList(pos);
 		}
 	}
 }
@@ -85,7 +121,7 @@ void Simulation::sendShopList(int pos){
 	int temp = CARDCOUNT;
 	send(client[pos],&temp,sizeof(int),0);
 	for(int i=0;i<CARDCOUNT;i++){
-		int len = sprintf(buffer[pos],"%d) %s, remain : %d\n",i+1,shop.getCardName(i).c_str(), shop.getCardRemain(i));
+		int len = sprintf(buffer[pos],"%d) %s, cost : %d, remain : %d\n",i+1,shop.getCardName(i).c_str(), shop.getCardCost(i), shop.getCardRemain(i));
 		send(client[pos],buffer[pos],BUFSIZE,0);
 	}
 }
@@ -93,9 +129,8 @@ void Simulation::sendShopList(int pos){
 void Simulation::sendHandList(int pos){
 	int temp = player[pos].getHandSize();
 	send(client[pos],&temp,sizeof(int),0);
-	for(int i=0;i<temp+2;i++){
-		int len = sprintf(buffer[pos],"%d) %s, remain : %d\n",i+1,shop.getCardName(i).c_str(), shop.getCardRemain(i));
+	for(int i=0;i<temp;i++){
+		strcpy(buffer[pos],player[pos].getHandName(i).c_str());
 		send(client[pos],buffer[pos],BUFSIZE,0);
 	}
 }
-

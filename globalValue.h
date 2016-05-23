@@ -45,7 +45,6 @@ typedef int position;
 
 #define MAXPLAYER 4
 #define BUFSIZE 1024
-//#define PLAYERCOUNT 4
 
 #define TREASURE 1
 #define ACTION 2
@@ -60,5 +59,9 @@ typedef int position;
 
 #define TOP 1
 #define BOTTOM 0
+
+#define ACTIONSTATE 0
+#define BUYSTATE 1
+
 #endif
 

@@ -2,6 +2,13 @@
 
 #include"player.h"
 
+void Player::initTurn(){
+	action = 1;
+	buy = 1;
+	coin = 0;
+	revealDeck(ANY,5,HAND,DISCARD);
+}
+
 void Player::initDeck(){
 	int temp[10];
 	Card tempCard;
@@ -31,15 +38,21 @@ void Player::initDeck(){
 
 void Player::revealDeck(int type, int count, place dest, place other){
 	for(int i=0;i<count;i++){
+		if(deck.size() == 0){
+			shuffle();
+		}
+		if(deck.size() == 0){
+			break;
+		}
 		Card card = deck.front();
 		if(type != ANY && type != card.getType()){
 			if(other == DISCARD){
 				discard.push_back(card);
-			
+		
 			}
 			else if(other == TRASH){
 			}
-		
+	
 		}
 		else{
 			if(dest == HAND){
@@ -105,6 +118,39 @@ void Player::printHand(){
 	}
 };
 
-void Player::getHandSize(){
+int Player::getHandSize(){
 	return hand.size();
+};
+
+string Player::getHandName(int pos){
+	return hand[pos].getName();
+};
+
+int Player::getState(){
+	for(int i=0;i<hand.size();i++){
+		if(hand[i].isAction()){
+			return ACTIONSTATE;
+		}
+	}
+	return BUYSTATE;
+};
+
+int Player::getMoney(){
+	int sum = 0;
+	for(int i=0;i<hand.size();i++){
+		sum += hand[i].getValue();
+	}
+	sum += coin;
+	return sum;
+};
+int Player::getBuy(){
+	return buy;
+};
+
+void Player::shuffle(){
+	for(int i=0;i<discard.size();i++){
+		Card card = discard.front();
+		deck.push_back(card);
+		discard.pop_front();
+	}
 };

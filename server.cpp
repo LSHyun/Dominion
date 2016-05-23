@@ -22,7 +22,6 @@ struct info{
 	string *name;
 };
 
-
 class MainServer{
 private:
 	int server, *client, totalPlayerCount, readyPlayerCount;
