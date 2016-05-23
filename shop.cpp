@@ -25,11 +25,10 @@ void Shop::initShop(int _count){
 	remainCard[0] = playerCount * 10;
 	remainCard[1] = playerCount * 10;
 	remainCard[2] = playerCount * 10;
-	remainCard[3] = playerCount * 10;
+	remainCard[3] = 12;
 	remainCard[4] = 12;
-	remainCard[5] = 12;
-	remainCard[6] = 10;
-	remainCard[7] = playerCount * 10;
+	remainCard[5] = 10;
+	remainCard[6] = playerCount * 10;
 }
 
 void Shop::printShop(){
