@@ -34,5 +34,11 @@ public:
 	string getName();
 	void initDeck();
 	void printHand();
-	void getHandSize();
+	int getHandSize();
+	string getHandName(int pos);
+	int getState();
+	int getMoney();
+	int getBuy();
+	void initTurn();
+	void shuffle();
 };

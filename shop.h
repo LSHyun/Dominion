@@ -12,4 +12,6 @@ public:
 	void printShop();
 	string getCardName(int pos);
 	int getCardRemain(int pos);
+	int getCardCost(int pos);
+	void updateCardRemain(int pos, int value);
 };

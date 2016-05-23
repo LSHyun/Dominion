@@ -48,4 +48,6 @@ public:
 	int actionWoodcutter(Player player);
 	int actionWorkshop(Player player);
 	void printCard();
+	int getValue();
+	int getCost();
 };

@@ -45,3 +45,9 @@ string Shop::getCardName(int pos){
 int Shop::getCardRemain(int pos){
 	return remainCard[pos];
 };
+int Shop::getCardCost(int pos){
+	return card[pos].getCost();
+};
+void Shop::updateCardRemain(int pos, int value){
+	remainCard[pos] += value;
+};

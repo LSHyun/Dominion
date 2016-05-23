@@ -450,3 +450,9 @@ int Card::actionWorkshop(Player player) {
 void Card::printCard(){
 	cout << name << endl;
 };
+int Card::getValue(){
+	return value;
+};
+int Card::getCost(){
+	return cost;
+};

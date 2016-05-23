@@ -17,7 +17,7 @@ class Client{
 private:
 	string name;
 	char sendBuffer[BUFSIZE], recvBuffer[BUFSIZE];
-	int server, number;
+	int server, number, turn;
 	struct sockaddr_in server_addr;
 	socklen_t size;
 	char ip[20];
@@ -27,6 +27,8 @@ public:
 	void printPlayerList();
 	void printShopList();
 	void playGame();
+	void printHandList();
+	void printCommand();
 };
 
 void Client::init(){
@@ -117,9 +119,54 @@ void Client::printShopList(){
 	}
 };
 
+void Client::printHandList(){
+	int count;
+	cout << "------------------------" << endl;
+	recv(server, &count,sizeof(int),0);
+	for(int i=0;i<count;i++){
+		recv(server, recvBuffer,BUFSIZE,0);
+		cout << recvBuffer << endl;
+	}
+	cout << "------------------------" << endl;
+}
+
 void Client::playGame(){
+	recv(server,&turn,sizeof(int),0);
 	recv(server, recvBuffer,BUFSIZE,0);
 	cout << recvBuffer << endl;
+	printHandList();
+	if(turn == number){
+		printCommand();
+	}
+	else{
+		cout << "Wait until other's turn end..." << endl;
+	}
+}
+
+void Client::printCommand(){
+	int state;
+	recv(server,&state,sizeof(int),0);
+	if(state == ACTIONSTATE){
+	}
+	else{
+		int money, buyCount, choose, result;
+		do{
+			recv(server,&money,sizeof(int),0);
+			recv(server,&buyCount,sizeof(int),0);
+			cout << "Your Money : " << money << endl;
+			cout << "You can buy " << buyCount << " times!" << endl;
+			cout << "0 : End, 1~17 : Card Number" << endl;
+			cin >> choose;
+			send(server,&choose,sizeof(int),0);
+			if(choose == 0){
+				break;
+			}
+			else{
+				recv(server,&result,sizeof(int),0);
+			}
+		}
+		while(buyCount > 0);
+	}
 }
 int main(){
 	Client client;
