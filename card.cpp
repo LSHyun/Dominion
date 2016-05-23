@@ -1,7 +1,40 @@
 #include<cstdlib>
 #include"card.h"
 #include"player.h"
+
 using namespace std;
+
+void Card::initCardMap(){
+	cardMap["Cellar"]= CELLAR;
+	cardMap["Chapel"] = CHAPEL;
+	cardMap["Moat"] = MOAT;
+	cardMap["Chancellor"] = CHANCELLOR;
+	cardMap["Viliage"] = VILIAGE;
+	cardMap["Woodcutter"] = WOODCUTTER;
+	cardMap["Workshop"] = WORKSHOP;
+	cardMap["Bureaucrat"] = BUREAUCRAT;
+	cardMap["Feast"] = FEAST;
+	cardMap["Gardens"] = GARDENS;
+	cardMap["Militia"] = MILITIA;
+	cardMap["Moneylender"] = MONEYLENDER;
+	cardMap["Remodel"] = REMODEL;
+	cardMap["Smithy"] = SMITHY;
+	cardMap["Spy"] = SPY;
+	cardMap["Thief"] = THIEF;
+	cardMap["Throneroom"] = THRONEROOM;
+	cardMap["Councilroom"] = COUNCILROOM;
+	cardMap["Festival"] = FESTIVAL;
+	cardMap["Laboratory"] = LABORATORY;
+	cardMap["Library"] = LIBRARY;
+	cardMap["Market"] = MARKET;
+	cardMap["Mine"] = MINE;
+	cardMap["Witch"] = WITCH;
+	cardMap["Adventure"] = ADVENTURE;
+};
+
+int Card::cardStringToNumber(string cardName){
+	return cardMap[cardName];
+}
 
 void Card::setCard(string _name){
 	if(_name == "Copper"){
@@ -28,8 +61,8 @@ void Card::setCard(string _name){
 		cost = 2;
 		score = 1;
 	}
-	else if(_name == "Dutch"){
-		name = "Dutch";
+	else if(_name == "Duchy"){
+		name = "Duchy";
 		type = VICTORY;
 		cost = 5;
 		score = 3;
@@ -196,7 +229,8 @@ cardType Card::getType(){
 
 /* Input << player */
 /* Output >> -1: wrong action, 0: done, else: special case */
-int Card::cardAction(Player player){
+int Card::cardAction(Player player, string cardName){
+	int r = cardStringToNumber(cardName);
 	switch(r){
 		case CELLAR:
 			return actionCellar(player);
@@ -389,7 +423,7 @@ int Card::actionSpy(Player player){
 	}
 	return SPY;
 }
-int card::actionThief(Player player) {
+int Card::actionThief(Player player) {
 	return THIEF;
 }
 int Card::actionThroneroom(Player player) {
@@ -413,3 +447,6 @@ int Card::actionWorkshop(Player player) {
 	player.gainCard(ANY, 1, 4, DISCARD);
 	return 0;
 }
+void Card::printCard(){
+	cout << name << endl;
+};

@@ -1,6 +1,6 @@
 #pragma once
 
-#include<vector>
+#include<deque>
 #include<iostream>
 #include"card.h"
 
@@ -9,9 +9,12 @@ using namespace std;
 class Player{ 
 private:
 	string name;
-	vector<Card> hand;
-	vector<Card> deck;
-	vector<Card> discard;
+	deque<Card> hand;
+	deque<Card> deck;
+	deque<Card> discard;
+	int action;
+	int buy;
+	int coin;
 public:
 	void revealDeck(cardType type, int count, place dest, place other);
 	void gainCard(string name, int count, place dest);
@@ -29,4 +32,7 @@ public:
 	void gainCardChoose(int count, int cost, place to);
 	Card *getDeckFront();
 	string getName();
+	void initDeck();
+	void printHand();
+	void getHandSize();
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include<iostream>
+#include<map>
 #include"globalValue.h"
 
 using namespace std;
@@ -13,12 +14,15 @@ private:
 	int cost;
 	int value;
 	int score;
+	map<string, int> cardMap;
 public:
 	void setCard(string _name);
 	string getName();
 	bool isAction();
 	cardType getType();
-	int cardAction(Player player);
+	void initCardMap();
+	int cardStringToNumber(string cardName);
+	int cardAction(Player player, string cardName);
 	int actionAdventure(Player player);
 	int actionBureaucrat(Player player);
 	int actionCellar(Player player);
@@ -43,8 +47,5 @@ public:
 	int actionWitch(Player player);
 	int actionWoodcutter(Player player);
 	int actionWorkshop(Player player);
+	void printCard();
 };
-
-enum cardType{
-	Cellar, Chapel, Moat, Chancellor, Viliage,
-	w

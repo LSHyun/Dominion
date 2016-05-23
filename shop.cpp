@@ -37,3 +37,11 @@ void Shop::printShop(){
 		cout << card[i].getName() << ", " << remainCard[i] << endl;
 	}
 };
+
+string Shop::getCardName(int pos){
+	return card[pos].getName();
+};
+
+int Shop::getCardRemain(int pos){
+	return remainCard[pos];
+};

@@ -25,6 +25,8 @@ public:
 	void run();
 	void init();
 	void printPlayerList();
+	void printShopList();
+	void playGame();
 };
 
 void Client::init(){
@@ -79,10 +81,8 @@ void Client::run(){
 			/* recvBuffer must be "Game Start" */
 			cout << recvBuffer << endl;
 			printPlayerList();
-			//recv(server, recvBuffer,BUFSIZE,0);
-			//cout << recvBuffer;
-			//recv(server,simulation,sizeof(Simulation),0);
-			//simulation->clientRun(number);
+			printShopList();
+			playGame();
 		}
 		else if(command == 3){
 			//send(server, &command,sizeof(int),0);
@@ -98,6 +98,7 @@ void Client::run(){
 
 void Client::printPlayerList(){
 	int count;
+	system("clear");
 	cout << "Player list :" << endl;
 	recv(server, &count,sizeof(int),0);
 	for(int i=0;i<count;i++){
@@ -105,6 +106,21 @@ void Client::printPlayerList(){
 		cout << recvBuffer;
 	}
 };
+
+void Client::printShopList(){
+	int count;
+	cout << "Shop list :" << endl;
+	recv(server, &count,sizeof(int),0);
+	for(int i=0;i<count;i++){
+		recv(server,recvBuffer,BUFSIZE,0);
+		cout << recvBuffer;
+	}
+};
+
+void Client::playGame(){
+	recv(server, recvBuffer,BUFSIZE,0);
+	cout << recvBuffer << endl;
+}
 int main(){
 	Client client;
 	client.init();

@@ -19,8 +19,7 @@ using namespace std;
 
 class Simulation{
 private:
-	int state;
-	int number;
+	int state, turn, number;
 	int *client;
 	Player *player;
 	char **buffer;
@@ -35,4 +34,6 @@ public:
 	void clientRun(int cNumber);
 	int cNumberToNumber(int cNumber);
 	void sendPlayerList(int pos);
+	void sendShopList(int pos);
+	void initPlayerCard(int pos);
 };
