@@ -12,26 +12,26 @@
 #include"serverClient.h"
 #include"player.h"
 
-void Player::initTurn(){
-	action = 1;
-	buy = 1;
-	coin = 0;
+void Player::InitTurn(){
+	aaction = 1;
+	abuy = 1;
+	acoin = 0;
 	discardHand();
-	revealDeck(ANY,5,HAND,DISCARD);
+	RevealDeck(ANY,5,HAND,DISCARD);
 }
 
-void Player::initDeck(){
+void Player::InitDeck(){
 	int temp[10];
 	Card tempCard;
 	for(int i=0;i<10;i++){
 		temp[i] = rand() % 65536;
 	}
-	deck.resize(10);
+	adeck.resize(10);
 	for(int i=0;i<7;i++){
-		deck[i].setCard("Copper");
+		adeck[i].SetCard("Copper");
 	}
 	for(int i=7;i<10;i++){
-		deck[i].setCard("Estate");
+		adeck[i].SetCard("Estate");
 	}
 	for(int i=0;i<9;i++){
 		for(int k=1;k<10;k++){
@@ -39,26 +39,26 @@ void Player::initDeck(){
 				int t = temp[i];
 				temp[i] = temp[k];
 				temp[k] = t;
-				tempCard = deck[i];
-				deck[i] = deck[k];
-				deck[k] = tempCard;
+				tempCard = adeck[i];
+				adeck[i] = adeck[k];
+				adeck[k] = tempCard;
 			}
 		}
 	}
 };
 
-void Player::revealDeck(int type, int count, place dest, place other){
+void Player::RevealDeck(int type, int count, place dest, place other){
 	for(int i=0;i<count;i++){
-		if(deck.size() == 0){
-			shuffle();
+		if(adeck.size() == 0){
+			Shuffle();
 		}
-		if(deck.size() == 0){
+		if(adeck.size() == 0){
 			break;
 		}
-		Card card = deck.front();
-		if(type != ANY && type != card.getType()){
+		Card card = adeck.front();
+		if(type != ANY && type != card.GetType()){
 			if(other == DISCARD){
-				discard.push_back(card);
+				adiscard.push_back(card);
 		
 			}
 			else if(other == TRASH){
@@ -67,44 +67,44 @@ void Player::revealDeck(int type, int count, place dest, place other){
 		}
 		else{
 			if(dest == HAND){
-				hand.push_back(card);
+				ahand.push_back(card);
 			}
 		}
-		deck.pop_front();
+		adeck.pop_front();
 	}
 };
 
-void Player::gainCard(string name, int count, place dest){
+void Player::GainCard(string name, int count, place dest){
 	for(int i=0;i<count;i++){
 		Card *c = new Card;
-		c->setCard(name);
-		cout << c->getName() << ", " << c->getCost() << endl;
+		c->SetCard(name);
+		cout << c->GetName() << ", " << c->GetCost() << endl;
 		if(dest ==DISCARD){
-			discard.push_back(*c);
+			adiscard.push_back(*c);
 		}
 		else if(dest == HAND){
-			hand.push_back(*c);
+			ahand.push_back(*c);
 		}
 		else if(dest == DECK){
-			deck.push_front(*c);
+			adeck.push_front(*c);
 		}
-		cout << "name : " << c->getName() << endl;
+		cout << "name : " << c->GetName() << endl;
 	}
 };
 
 void Player::gainCard(Card c, int count, place dest) {
 	for(int i=0;i<count;i++){
-		cout << c.getName() << ", " << c.getCost() << endl;
+		cout << c.GetName() << ", " << c.GetCost() << endl;
 		if(dest ==DISCARD){
-			discard.push_back(c);
+			adiscard.push_back(c);
 		}
 		else if(dest == HAND){
-			hand.push_back(c);
+			ahand.push_back(c);
 		}
 		else if(dest == DECK){
-			deck.push_front(c);
+			adeck.push_front(c);
 		}
-		cout << "name : " << c.getName() << endl;
+		cout << "name : " << c.GetName() << endl;
 	}
 };
 
@@ -112,13 +112,13 @@ void Player::gainCard(Card c, int count, place dest) {
 void Player::gainCard(cardType type, int count, int price, place dest) {
 };
 
-int Player::discardCard(int count){
+int Player::DiscardCard(int count){
 	int result = 0;
 	for(int i=0;i<count;i++){
-		if(hand.size() != 0){
-			Card card = hand.front();
-			discard.push_back(card);
-			hand.pop_front();
+		if(ahand.size() != 0){
+			Card card = ahand.front();
+			adiscard.push_back(card);
+			ahand.pop_front();
 			++result;
 		}
 		else{
@@ -127,157 +127,157 @@ int Player::discardCard(int count){
 	}
 	return result;
 };
-void Player::setName(string _name){
-	name = _name;
+void Player::SetName(string _name){
+	aname = _name;
 };
 
-string Player::getName(){
-	return name;
+string Player::GetName(){
+	return aname;
 };
 
-void Player::addAction(int count){
-	action += count;
+void Player::AddAction(int count){
+	aaction += count;
 };
 
-void Player::drawCard(int count){
-	revealDeck(ANY,count,HAND,DISCARD);
+void Player::DrawCard(int count){
+	RevealDeck(ANY,count,HAND,DISCARD);
 };
 
-void Player::addCoin(int count){
-	coin += count;
+void Player::AddCoin(int count){
+	acoin += count;
 };
 
-void Player::discardDeck(int count){
+void Player::DiscardDeck(int count){
 	for(int i=0;i<count;i++){
-		Card c = deck.front();
-		discard.push_back(c);
-		deck.pop_front();
+		Card c = adeck.front();
+		adiscard.push_back(c);
+		adeck.pop_front();
 	}
 };
 
-void Player::trashCard(int pos){
-	deque<Card>::iterator it = hand.begin();
+void Player::TrashCard(int pos){
+	deque<Card>::iterator it = ahand.begin();
 	it += pos;
-	hand.erase(it);
+	ahand.erase(it);
 };
 
-void Player::addBuy(int count){
-	buy += count;
+void Player::AddBuy(int count){
+	abuy += count;
 };
 
-Card* Player::getDeckFront(){
+Card* Player::GetDeckFront(){
 };
 
-int Player::getCardCount(){
-	return hand.size();
+int Player::GetCardCount(){
+	return ahand.size();
 };
 
-void Player::gainCardChoose(int count, int cost, place to){
+void Player::GainCardChoose(int count, int cost, place to){
 };
 
-void Player::printHand(){
-	for(int i=0;i<hand.size();i++){
-		hand[i].printCard();
+void Player::PrintHand(){
+	for(int i=0;i<ahand.size();i++){
+		ahand[i].PrintCard();
 	}
 };
 
-int Player::getHandSize(){
-	return hand.size();
+int Player::GetHandSize(){
+	return ahand.size();
 };
 
-string Player::getHandName(int pos){
-	return hand[pos].getName();
+string Player::GetHandName(int pos){
+	return ahand[pos].GetName();
 };
 
-int Player::getState(){
-	for(int i=0;i<hand.size();i++){
-		if(hand[i].isAction()){
+int Player::GetState(){
+	for(int i=0;i<ahand.size();i++){
+		if(ahand[i].IsAction()){
 			return ACTIONSTATE;
 		}
 	}
 	return BUYSTATE;
 };
 
-int Player::getMoney(){
+int Player::GetMoney(){
 	int sum = 0;
-	for(int i=0;i<hand.size();i++){
-		sum += hand[i].getValue();
+	for(int i=0;i<ahand.size();i++){
+		sum += ahand[i].GetValue();
 	}
-	sum += coin;
+	sum += acoin;
 	return sum;
 };
-int Player::getBuy(){
-	return buy;
+int Player::GetBuy(){
+	return abuy;
 };
 
-void Player::shuffle(){
-	for(int i=0;i<discard.size();i++){
-		Card card = discard.front();
-		deck.push_back(card);
-		discard.pop_front();
+void Player::Shuffle(){
+	for(int i=0;i<adiscard.size();i++){
+		Card card = adiscard.front();
+		adeck.push_back(card);
+		adiscard.pop_front();
 	}
-	int temp[deck.size()];
+	int temp[adeck.size()];
 	Card tempCard;
-	for(int i=0;i<deck.size();i++){
+	for(int i=0;i<adeck.size();i++){
 		temp[i] = rand() % 65536;
 	}
-	for(int i=0;i<deck.size()-1;i++){
-		for(int k=1;k<deck.size();k++){
+	for(int i=0;i<adeck.size()-1;i++){
+		for(int k=1;k<adeck.size();k++){
 			if(temp[i] < temp[k]){
 				int t = temp[i];
 				temp[i] = temp[k];
 				temp[k] = t;
-				tempCard = deck[i];
-				deck[i] = deck[k];
-				deck[k] = tempCard;
+				tempCard = adeck[i];
+				adeck[i] = adeck[k];
+				adeck[k] = tempCard;
 			}
 		}
 	}
 };
 
 void Player::discardHand(){
-	int temp = discardCard(hand.size());
+	int temp = DiscardCard(ahand.size());
 };
 
-Card* Player::getHand(int pos){
-	if(pos < hand.size()){
-		return &hand[pos];
+Card* Player::GetHand(int pos){
+	if(pos < ahand.size()){
+		return &ahand[pos];
 	}
 	else{
 		return NULL;
 	}
 };
 
-int Player::getAction(){
-	return action;
+int Player::GetAction(){
+	return aaction;
 };
-void Player::setAction(int _action){
-	action = _action;
+void Player::SetAction(int _action){
+	aaction = _action;
 };
-void Player::setClient(int _client){
-	client = _client;
+void Player::SetClient(int _client){
+	aclient = _client;
 };
-int Player::getClient(){
-	return client;
+int Player::GetClient(){
+	return aclient;
 };
-void Player::sendHandList(){
-	int temp = hand.size();
+void Player::SendHandList(){
+	int temp = ahand.size();
 	char buffer[BUFSIZE];
-	send(client,&temp,sizeof(int),0);
+	send(aclient,&temp,sizeof(int),0);
 	for(int i=0;i<temp;i++){
-		strcpy(buffer,getHandName(i).c_str());
-		send(client,buffer,BUFSIZE,0);
+		strcpy(buffer,GetHandName(i).c_str());
+		send(aclient,buffer,BUFSIZE,0);
 	}
 }
-int Player::getDeckSize(){
-	return deck.size();
+int Player::GetDeckSize(){
+	return adeck.size();
 };
 
-void Player::discardHand(int pos){
-	Card card = hand[pos];
-	deque<Card>::iterator it = hand.begin();
+void Player::DiscardHand(int pos){
+	Card card = ahand[pos];
+	deque<Card>::iterator it = ahand.begin();
 	it += pos;
-	discard.push_back(card);
-	hand.erase(it);
+	adiscard.push_back(card);
+	ahand.erase(it);
 }
 	
