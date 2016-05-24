@@ -51,4 +51,5 @@ public:
 	void SetAction(int _action);
 	void SendHandList();
 	int GetDeckSize();
+	void PrintScore(int number);
 };

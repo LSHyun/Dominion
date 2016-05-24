@@ -15,4 +15,5 @@ public:
 	int GetCardCost(int pos);
 	void UpdateCardRemain(int pos, int value);
 	Card GetCard(int pos);
+	bool IsFinished();
 };

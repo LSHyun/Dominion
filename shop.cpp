@@ -133,3 +133,33 @@ void Shop::UpdateCardRemain(int pos, int value){
 Card Shop::GetCard(int pos){
 	return acard[pos];
 };
+
+//============================================================================
+// Name        : IsFinished()
+// Author      : SWH
+// Version     : 1.1
+// Param       : aremainCard
+// Return      : bool
+// Deprecated  : Using
+// See         : simulation.cpp card.cpp
+// Todo        : check game is finished
+// Bug         : No bug
+//============================================================================
+bool Shop::IsFinished(){
+	int count = 0;
+	if(aremainCard[5] == 0){
+		return true;
+	}
+	for(int i=0;i<CARDCOUNT;i++){
+		if(aremainCard[i] == 0){
+			++count;
+		}
+	}
+	if(count > 2){
+		return true;
+	}
+	else{
+		return false;
+	}
+};
+			

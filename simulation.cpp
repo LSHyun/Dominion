@@ -71,7 +71,7 @@ void Simulation::MainRun(){
 }
 //============================================================================
 // Name        : Subrun()
-// Author      : SWH,LSH
+// Author      : SWH
 // Version     : 1.1
 // Param       : applayer,appbuffer,apclient,apclientNumber,anumber,astate,anumber,ashop,aturn,astate
 // Return      : NULL
@@ -133,6 +133,9 @@ void Simulation::SubRun(int pos){
 					
 					send(apclient[pos],&action,sizeof(int),0);
 				}
+				if(ashop.IsFinished()){
+					break;
+				}
 				state = BUYSTATE;
 			}
 			if(state == BUYSTATE){
@@ -166,6 +169,9 @@ void Simulation::SubRun(int pos){
 					}
 				}
 				cout << "Turn end" << endl;
+				if(ashop.IsFinished()){
+					break;
+				}
 				aturn = (aturn + 1) % anumber;
 			}
 			applayer[pos].InitTurn();
@@ -179,11 +185,21 @@ void Simulation::SubRun(int pos){
 			SendPlayerList(pos);
 			SendShopList(pos);
 			SendHandList(pos);
-			while(aturn != pos);
+			while(aturn != pos){
+				if(ashop.IsFinished()){
+					break;
+				}
+			}
+			if(ashop.IsFinished()){
+				break;
+			}
 			//cout << "AFTER WHILE" << endl;
 			send(apclient[pos],&aturn,sizeof(int),0);
 		}
 	}
+	//cout << "Player" << pos << endl;
+	applayer[pos].PrintScore(pos);
+	
 }
 //============================================================================
 // Name        : CNumberToNumber()

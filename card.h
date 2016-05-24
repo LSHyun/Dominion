@@ -51,4 +51,5 @@ public:
 	void PrintCard();
 	int GetValue();
 	int GetCost();
+	int GetScore();
 };

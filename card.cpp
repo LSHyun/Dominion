@@ -16,17 +16,6 @@
 
 using namespace std;
 
-//============================================================================
-// Name        : InitCardMap()
-// Author      : SWH
-// Version     : 1.1
-// Param       : acardmap
-// Return      : NULL
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : Initialize card default setting
-// Bug         :
-//===========================================================================
 void Card::InitCardMap(){
 	acardMap["Cellar"] = CELLAR;
 	acardMap["Chapel"] = CHAPEL;
@@ -55,32 +44,10 @@ void Card::InitCardMap(){
 	acardMap["Adventure"] = ADVENTURE;
 };
 
-//============================================================================
-// Name        : CardStringToNumber()
-// Author      : SWH
-// Version     : 1.1
-// Param       : acardmap
-// Return      : card default
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : card name to card default number
-// Bug         :
-//===========================================================================
 int Card::CardStringToNumber(string cardName){
 	return acardMap[cardName];
 }
 
-//============================================================================
-// Name        : SetCard()
-// Author      : SWH
-// Version     : 1.1
-// Param       : acardmap, aname, atype, acost, avalue,
-// Return      : NULL
-// Deprecated  : using
-// See         : card.cpp, player.cpp, shop.cpp
-// Todo        : initialize or some card set.
-// Bug         :
-//===========================================================================
 void Card::SetCard(string _name){
 	InitCardMap();
 	cout << _name << endl;
@@ -262,33 +229,10 @@ flagSetCard:
 		goto flagSetCard;
 	}
 }
-
-//============================================================================
-// Name        : GetName()
-// Author      : SWH
-// Version     : 1.1
-// Param       : aname
-// Return      : card name
-// Deprecated  : using
-// See         : card.cpp, player.cpp, shop.cpp simulation.cpp
-// Todo        : get card name
-// Bug         :
-//===========================================================================
 string Card::GetName(){
 	return aname;
 }
 
-//============================================================================
-// Name        : IsAction()
-// Author      : SWH
-// Version     : 1.1
-// Param       : atype
-// Return      : bool
-// Deprecated  : using
-// See         : card.cpp, player.cpp, simulation.cpp
-// Todo        : check this card is action card?
-// Bug         :
-//===========================================================================
 bool Card::IsAction(){
 	if(atype == ACTION){
 		return true;
@@ -298,32 +242,10 @@ bool Card::IsAction(){
 	}
 }
 
-//============================================================================
-// Name        : GetType()
-// Author      : SWH
-// Version     : 1.1
-// Param       : atype
-// Return      : bool
-// Deprecated  : using
-// See         : card.cpp, player.cpp
-// Todo        : get card type (action, tresure,victory)
-// Bug         :
-//===========================================================================
 cardType Card::GetType(){
 	return atype;
 }
 
-//============================================================================
-// Name        : CardAction()
-// Author      : SWH
-// Version     : 1.1
-// Param       : cardName
-// Return      : card num
-// Deprecated  : using
-// See         : simulation.cpp
-// Todo        : action card execute
-// Bug         :
-//===========================================================================
 /* Input << player */
 /* Output >> -1: wrong action, 0: done, else: special case */
 int Card::CardAction(Player *player, string cardName, Shop *shop){
@@ -384,18 +306,6 @@ int Card::CardAction(Player *player, string cardName, Shop *shop){
 			return -1;
 	}
 }
-
-//============================================================================
-// Name        : ActionAdventure()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionAdventure
-// Bug         :
-//===========================================================================
 int Card::ActionAdventure(Player *player){
 	int client = player->GetClient();
 	int temp = 0;
@@ -404,17 +314,6 @@ int Card::ActionAdventure(Player *player){
 	return 0;
 };
 
-//============================================================================
-// Name        : ActionBureaucrat()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionBureaucrat
-// Bug         :
-//===========================================================================
 int Card::ActionBureaucrat(Player *player){
 	int client = player->GetClient();
 	int temp = 0;
@@ -423,17 +322,6 @@ int Card::ActionBureaucrat(Player *player){
 	return BUREAUCRAT;
 };
 
-//============================================================================
-// Name        : ActionCellar()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionCellar
-// Bug         :
-//===========================================================================
 int Card::ActionCellar(Player *player){
 	int client = player->GetClient();
 	int temp = CELLAR;
@@ -444,18 +332,6 @@ int Card::ActionCellar(Player *player){
 	player->DrawCard(count);
 	return 0;
 };
-
-//============================================================================
-// Name        : ActionChancellor()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionChancellor
-// Bug         :
-//===========================================================================
 int Card::ActionChancellor(Player *player){
 	int client = player->GetClient();
 	int temp = CHANCELLOR;
@@ -468,18 +344,6 @@ int Card::ActionChancellor(Player *player){
 	player->AddCoin(2);
 	return 0;
 }
-
-//============================================================================
-// Name        : ActionChapel()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionChapel
-// Bug         :
-//===========================================================================
 int Card::ActionChapel(Player *player){
 	int client = player->GetClient();
 	int temp = CHAPEL;
@@ -493,18 +357,6 @@ int Card::ActionChapel(Player *player){
 	}
 	return 0;
 };
-
-//============================================================================
-// Name        : ActionCouncilroom()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionCouncilroom
-// Bug         :
-//===========================================================================
 int Card::ActionCouncilroom(Player *player){
 	int client = player->GetClient();
 	int temp = 0;
@@ -513,18 +365,6 @@ int Card::ActionCouncilroom(Player *player){
 	player->AddBuy(1);
 	return COUNCILROOM;
 };
-
-//============================================================================
-// Name        : ActionFeast()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionFeast
-// Bug         :
-//===========================================================================
 int Card::ActionFeast(Player *player){
 	int client = player->GetClient();
 	int temp = 0;
@@ -532,18 +372,6 @@ int Card::ActionFeast(Player *player){
 	//player.gainCardChoose(1,5,DISCARD);
 	return FEAST;
 };
-
-//============================================================================
-// Name        : ActionFestival()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionFestival
-// Bug         :
-//===========================================================================
 int Card::ActionFestival(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -553,18 +381,6 @@ int Card::ActionFestival(Player *player) {
 	player->AddCoin(2);
 	return 0;
 };
-
-//============================================================================
-// Name        : ActionLaboratory()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionLaboratory
-// Bug         :
-//===========================================================================
 int Card::ActionLaboratory(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -573,18 +389,6 @@ int Card::ActionLaboratory(Player *player) {
 	player->AddAction(1);
 	return 0;
 };
-
-//============================================================================
-// Name        : ActionLaboratory()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionLaboratory
-// Bug         : can not execute perfectly
-//===========================================================================
 int Card::ActionLibrary(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -617,18 +421,6 @@ int Card::ActionLibrary(Player *player) {
 	}
 	return 0;
 }
-
-//============================================================================
-// Name        : ActionMarket()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionMarket
-// Bug         :
-//===========================================================================
 int Card::ActionMarket(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -639,18 +431,6 @@ int Card::ActionMarket(Player *player) {
 	player->AddCoin(1);
 	return 0;
 };
-
-//============================================================================
-// Name        : ActionMilitia()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionMilitia
-// Bug         :
-//==========================================================================
 int Card::ActionMilitia(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -658,18 +438,6 @@ int Card::ActionMilitia(Player *player) {
 	player->AddCoin(1);
 	return MILITIA;
 };
-
-//============================================================================
-// Name        : ActionMine()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionMine
-// Bug         :
-//==========================================================================
 int Card::ActionMine(Player *player) {
 	int client = player->GetClient();
 	int temp = MINE;
@@ -700,18 +468,6 @@ int Card::ActionMine(Player *player) {
 	}
 	return 0;
 }
-
-//============================================================================
-// Name        : ActionMoat()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionMoat
-// Bug         :
-//==========================================================================
 int Card::ActionMoat(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -719,18 +475,6 @@ int Card::ActionMoat(Player *player) {
 	player->DrawCard(2);
 	return 0;
 }
-
-//============================================================================
-// Name        : ActionMoneylender()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionMoneylender
-// Bug         :
-//==========================================================================
 int Card::ActionMoneylender(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -744,18 +488,6 @@ int Card::ActionMoneylender(Player *player) {
 	}
 	return 0;
 }
-
-//============================================================================
-// Name        : ActionRemodel()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionRemodel
-// Bug         :
-//==========================================================================
 int Card::ActionRemodel(Player *player, Shop *shop) {
 	int client = player->GetClient();
 	int temp = REMODEL;
@@ -787,18 +519,6 @@ int Card::ActionRemodel(Player *player, Shop *shop) {
 	}
 	return 0;
 }
-
-//============================================================================
-// Name        : ActionSmithy()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionSmithy
-// Bug         :
-//==========================================================================
 int Card::ActionSmithy(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -806,18 +526,6 @@ int Card::ActionSmithy(Player *player) {
 	player->DrawCard(3);
 	return 0;
 }
-
-//============================================================================
-// Name        : ActionSpy()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionSpy
-// Bug         : unembodiment
-//==========================================================================
 int Card::ActionSpy(Player *player){
 	int client = player->GetClient();
 	int temp = SPY;
@@ -839,54 +547,18 @@ int Card::ActionSpy(Player *player){
 */
 	return SPY;
 }
-
-//============================================================================
-// Name        : ActionThief()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionThief
-// Bug         : unembodiment
-//==========================================================================
 int Card::ActionThief(Player *player) {
 	int client = player->GetClient();
 	int temp = THIEF;
 	send(client,&temp,sizeof(int),0);
 	return THIEF;
 }
-
-//============================================================================
-// Name        : ActionThroneroom()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionThroneroom
-// Bug         : unembodiment
-//==========================================================================
 int Card::ActionThroneroom(Player *player) {
 	int client = player->GetClient();
 	int temp = THRONEROOM;
 	send(client,&temp,sizeof(int),0);
 	return THRONEROOM;
 }
-
-//============================================================================
-// Name        : ActionViliage()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionViliage
-// Bug         :
-//==========================================================================
 int Card::ActionViliage(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -895,18 +567,6 @@ int Card::ActionViliage(Player *player) {
 	player->AddAction(2);
 	return 0;
 }
-
-//============================================================================
-// Name        : ActionWitch()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionWitch
-// Bug         :
-//==========================================================================
 int Card::ActionWitch(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -914,18 +574,6 @@ int Card::ActionWitch(Player *player) {
 	player->DrawCard(2);
 	return WITCH;
 }
-
-//============================================================================
-// Name        : ActionWoodcutter()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionWoodcutter
-// Bug         :
-//==========================================================================
 int Card::ActionWoodcutter(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -934,18 +582,6 @@ int Card::ActionWoodcutter(Player *player) {
 	player->AddBuy(1);
 	return 0;
 }
-
-//============================================================================
-// Name        : ActionWorkshop()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : 0
-// Deprecated  : using
-// See         : card.cpp
-// Todo        : execute  ActionWorkshop
-// Bug         :
-//==========================================================================
 int Card::ActionWorkshop(Player *player) {
 	int client = player->GetClient();
 	int temp = 0;
@@ -953,48 +589,15 @@ int Card::ActionWorkshop(Player *player) {
 	player->gainCard(ANY, 1, 4, DISCARD);
 	return 0;
 }
-
-//============================================================================
-// Name        : PrintCard()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : NULL
-// Deprecated  : using
-// See         : player.cpp
-// Todo        : print card name
-// Bug         :
-//==========================================================================
 void Card::PrintCard(){
 	cout << aname << endl;
 };
-
-//============================================================================
-// Name        : GetValue()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : NULL
-// Deprecated  : using
-// See         : player.cpp
-// Todo        : get card value
-// Bug         :
-//==========================================================================
 int Card::GetValue(){
 	return avalue;
 };
-
-//============================================================================
-// Name        : GetCost()
-// Author      : SWH
-// Version     : 1.1
-// Param       : player
-// Return      : NULL
-// Deprecated  : using
-// See         : player.cpp card.cpp shop.cpp
-// Todo        : get card cost
-// Bug         :
-//==========================================================================
 int Card::GetCost(){
 	return acost;
+};
+int Card::GetScore(){
+	return ascore;
 };
