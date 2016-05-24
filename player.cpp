@@ -65,7 +65,39 @@ void Player::revealDeck(int type, int count, place dest, place other){
 };
 
 void Player::gainCard(string name, int count, place dest){
+	for(int i=0;i<count;i++){
+		Card *c = new Card;
+		c->setCard(name);
+		cout << c->getName() << ", " << c->getCost() << endl;
+		if(dest ==DISCARD){
+			discard.push_back(*c);
+		}
+		else if(dest == HAND){
+			hand.push_back(*c);
+		}
+		else if(dest == DECK){
+			deck.push_front(*c);
+		}
+		cout << "name : " << c->getName() << endl;
+	}
 };
+
+void Player::gainCard(Card c, int count, place dest) {
+	for(int i=0;i<count;i++){
+		cout << c.getName() << ", " << c.getCost() << endl;
+		if(dest ==DISCARD){
+			discard.push_back(c);
+		}
+		else if(dest == HAND){
+			hand.push_back(c);
+		}
+		else if(dest == DECK){
+			deck.push_front(c);
+		}
+		cout << "name : " << c.getName() << endl;
+	}
+};
+
 
 void Player::gainCard(cardType type, int count, int price, place dest) {
 };
@@ -171,4 +203,19 @@ void Player::shuffle(){
 void Player::discardHand(){
 	int temp = discardCard(hand.size());
 };
-		
+
+Card* Player::getHand(int pos){
+	if(pos < hand.size()){
+		return &hand[pos];
+	}
+	else{
+		return NULL;
+	}
+};
+
+int Player::getAction(){
+	return action;
+};
+void Player::setAction(int _action){
+	action = _action;
+};

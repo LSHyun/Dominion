@@ -127,7 +127,7 @@ void Client::printHandList(){
 	recv(server, &count,sizeof(int),0);
 	for(int i=0;i<count;i++){
 		recv(server, recvBuffer,BUFSIZE,0);
-		cout << recvBuffer << endl;
+		cout << i << ") " << recvBuffer << endl;
 	}
 	cout << "------------------------" << endl;
 }
@@ -158,8 +158,23 @@ void Client::printCommand(){
 	//cout << "in printCommand after recv" << endl;
 	if(state == ACTIONSTATE){
 		//cout << "in printCommand ACTIONSTATE" << endl;
+		int action, result;
+		action = 1;
+		do{
+			
+			do{
+				cout << "You can use " << action << " action Card!" << endl;
+				cout << "Type number what you want to use" << endl;
+				cin >> result;
+				send(server,&result,sizeof(int),0);
+				recv(server,&result,sizeof(int),0);
+			}
+			while(result == -1);
+			recv(server,&action,sizeof(int),0);
+		}
+		while(action > 0);
 	}
-	else{
+	if(state == BUYSTATE){
 		int money, buyCount, choose, result;
 		do{
 			recv(server,&money,sizeof(int),0);

@@ -67,6 +67,29 @@ void Simulation::subRun(int pos){
 			
 			if(state == ACTIONSTATE){
 				send(client[pos],&state,sizeof(int),0);
+				int action = player[pos].getAction();
+				while(action > 0){
+					int result;
+					//send(client[pos],&action,sizeof(int),0);
+					do{
+						recv(client[pos],&result,sizeof(int),0);
+						Card *c = player[pos].getHand(result);
+						if(c == NULL){
+							result = -1;
+						}
+						else if(c->isAction()){
+							result = c->cardAction(player[pos],c->getName());
+							action = player[pos].getAction();	
+						}
+						else{
+							result = -1;
+						}
+						send(client[pos],&result,sizeof(int),0);
+						
+					}
+					while(result == -1);
+					send(client[pos],&action,sizeof(int),0);
+				}
 			}
 			if(state == BUYSTATE){
 				send(client[pos],&state,sizeof(int),0);
@@ -83,7 +106,7 @@ void Simulation::subRun(int pos){
 					else{
 						choose--;
 						if(money >= shop.getCardCost(choose) && shop.getCardRemain(choose) > 0){
-							player[pos].gainCard(shop.getCardName(choose), 1, DISCARD);
+							player[pos].gainCard(shop.getCard(choose), 1, DISCARD);
 							money -= shop.getCardCost(choose);
 							buyCount -= 1;
 							shop.updateCardRemain(choose,-1);
