@@ -71,7 +71,7 @@ void Simulation::MainRun(){
 }
 //============================================================================
 // Name        : Subrun()
-// Author      : SWH
+// Author      : SWH,LSH
 // Version     : 1.1
 // Param       : applayer,appbuffer,apclient,apclientNumber,anumber,astate,anumber,ashop,aturn,astate
 // Return      : NULL
@@ -199,7 +199,6 @@ void Simulation::SubRun(int pos){
 	}
 	//cout << "Player" << pos << endl;
 	applayer[pos].PrintScore(pos);
-	
 }
 //============================================================================
 // Name        : CNumberToNumber()
