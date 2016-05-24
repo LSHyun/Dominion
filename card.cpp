@@ -16,225 +16,225 @@
 
 using namespace std;
 
-void Card::initCardMap(){
-	cardMap["Cellar"] = CELLAR;
-	cardMap["Chapel"] = CHAPEL;
-	cardMap["Moat"] = MOAT;
-	cardMap["Chancellor"] = CHANCELLOR;
-	cardMap["Viliage"] = VILIAGE;
-	cardMap["Woodcutter"] = WOODCUTTER;
-	cardMap["Workshop"] = WORKSHOP;
-	cardMap["Bureaucrat"] = BUREAUCRAT;
-	cardMap["Feast"] = FEAST;
-	cardMap["Gardens"] = GARDENS;
-	cardMap["Militia"] = MILITIA;
-	cardMap["Moneylender"] = MONEYLENDER;
-	cardMap["Remodel"] = REMODEL;
-	cardMap["Smithy"] = SMITHY;
-	cardMap["Spy"] = SPY;
-	cardMap["Thief"] = THIEF;
-	cardMap["Throneroom"] = THRONEROOM;
-	cardMap["Councilroom"] = COUNCILROOM;
-	cardMap["Festival"] = FESTIVAL;
-	cardMap["Laboratory"] = LABORATORY;
-	cardMap["Library"] = LIBRARY;
-	cardMap["Market"] = MARKET;
-	cardMap["Mine"] = MINE;
-	cardMap["Witch"] = WITCH;
-	cardMap["Adventure"] = ADVENTURE;
+void Card::InitCardMap(){
+	acardMap["Cellar"] = CELLAR;
+	acardMap["Chapel"] = CHAPEL;
+	acardMap["Moat"] = MOAT;
+	acardMap["Chancellor"] = CHANCELLOR;
+	acardMap["Viliage"] = VILIAGE;
+	acardMap["Woodcutter"] = WOODCUTTER;
+	acardMap["Workshop"] = WORKSHOP;
+	acardMap["Bureaucrat"] = BUREAUCRAT;
+	acardMap["Feast"] = FEAST;
+	acardMap["Gardens"] = GARDENS;
+	acardMap["Militia"] = MILITIA;
+	acardMap["Moneylender"] = MONEYLENDER;
+	acardMap["Remodel"] = REMODEL;
+	acardMap["Smithy"] = SMITHY;
+	acardMap["Spy"] = SPY;
+	acardMap["Thief"] = THIEF;
+	acardMap["Throneroom"] = THRONEROOM;
+	acardMap["Councilroom"] = COUNCILROOM;
+	acardMap["Festival"] = FESTIVAL;
+	acardMap["Laboratory"] = LABORATORY;
+	acardMap["Library"] = LIBRARY;
+	acardMap["Market"] = MARKET;
+	acardMap["Mine"] = MINE;
+	acardMap["Witch"] = WITCH;
+	acardMap["Adventure"] = ADVENTURE;
 };
 
-int Card::cardStringToNumber(string cardName){
-	return cardMap[cardName];
+int Card::CardStringToNumber(string cardName){
+	return acardMap[cardName];
 }
 
-void Card::setCard(string _name){
-	initCardMap();
+void Card::SetCard(string _name){
+	InitCardMap();
 	cout << _name << endl;
 	int r = (rand() % TOTALACTION) + 1;
 	if(_name == "Copper"){
-		name = "Copper";
-		type = TREASURE;
-		cost = 0;
-		value = 1;
+		aname = "Copper";
+		atype = TREASURE;
+		acost = 0;
+		avalue = 1;
 	}
 	else if(_name == "Silver"){
-		name = "Silver";
-		type = TREASURE;
-		cost = 3;
-		value = 2;
+		aname = "Silver";
+		atype = TREASURE;
+		acost = 3;
+		avalue = 2;
 	}
 	else if(_name == "Gold"){
-		name = "Gold";
-		type = TREASURE;
-		cost = 6;
-		value = 3;
+		aname = "Gold";
+		atype = TREASURE;
+		acost = 6;
+		avalue = 3;
 	}
 	else if(_name == "Estate"){
-		name = "Estate";
-		type = VICTORY;
-		cost = 2;
-		score = 1;
+		aname = "Estate";
+		atype = VICTORY;
+		acost = 2;
+		ascore = 1;
 	}
 	else if(_name == "Duchy"){
-		name = "Duchy";
-		type = VICTORY;
-		cost = 5;
-		score = 3;
+		aname = "Duchy";
+		atype = VICTORY;
+		acost = 5;
+		ascore = 3;
 	}
 	else if(_name == "Province"){
-		name = "Province";
-		type = VICTORY;
-		cost = 8;
-		score = 6;
+		aname = "Province";
+		atype = VICTORY;
+		acost = 8;
+		ascore = 6;
 	}
 	else if(_name == "Curse"){
-		name = "Curse";
-		type = CURSE;
-		cost = 0;
-		score = -1;
+		aname = "Curse";
+		atype = CURSE;
+		acost = 0;
+		ascore = -1;
 	}
 	else if(_name == "RAND"){
 flagSetCard:
 		switch(r){
 			case CELLAR:
-				name = "Cellar";
-				type = ACTION;
-				cost = 2;
+				aname = "Cellar";
+				atype = ACTION;
+				acost = 2;
 				break;
 			case CHAPEL:
-				name = "Chapel";
-				type = ACTION;
-				cost = 2;
+				aname = "Chapel";
+				atype = ACTION;
+				acost = 2;
 				break;
 			case MOAT:
-				name = "Moat";
-				type = ACTION;
-				cost = 2;
+				aname = "Moat";
+				atype = ACTION;
+				acost = 2;
 				break;
 			case CHANCELLOR:
-				name = "Chancellor";
-				type = ACTION;
-				cost = 3;
+				aname = "Chancellor";
+				atype = ACTION;
+				acost = 3;
 				break;
 			case VILIAGE:
-				name = "Viliage";
-				type = ACTION;
-				cost = 3;
+				aname = "Viliage";
+				atype = ACTION;
+				acost = 3;
 				break;
 			case WOODCUTTER:
-				name = "Woodcutter";
-				type = ACTION;
-				cost = 3;
+				aname = "Woodcutter";
+				atype = ACTION;
+				acost = 3;
 				break;
 			case WORKSHOP:
-				name = "Workshop";
-				type = ACTION;
-				cost = 4;
+				aname = "Workshop";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case BUREAUCRAT:
-				name = "Bureaucrat";
-				type = ACTION;
-				cost = 4;
+				aname = "Bureaucrat";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case FEAST:
-				name = "Feast";
-				type = ACTION;
-				cost = 4;
+				aname = "Feast";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case GARDENS:
-				name = "Garden";
-				type = VICTORY;
-				cost = 4;
+				aname = "Garden";
+				atype = VICTORY;
+				acost = 4;
 				break;
 			case MILITIA:
-				name = "Militia";
-				type = ACTION;
-				cost = 4;
+				aname = "Militia";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case MONEYLENDER:
-				name = "Moneylender";
-				type = ACTION;
-				cost = 4;
+				aname = "Moneylender";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case REMODEL:
-				name = "Remodel";
-				type = ACTION;
-				cost = 4;
+				aname = "Remodel";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case SMITHY:
-				name = "Smithy";
-				type = ACTION;
-				cost = 4;
+				aname = "Smithy";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case SPY:
-				name = "Spy";
-				type = ACTION;
-				cost = 4;
+				aname = "Spy";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case THIEF:
-				name = "Thief";
-				type = ACTION;
-				cost = 4;
+				aname = "Thief";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case THRONEROOM:
-				name = "Throneroom";
-				type = ACTION;
-				cost = 4;
+				aname = "Throneroom";
+				atype = ACTION;
+				acost = 4;
 				break;
 			case COUNCILROOM:
-				name = "CouncilRoom";
-				type = ACTION;
-				cost = 5;
+				aname = "CouncilRoom";
+				atype = ACTION;
+				acost = 5;
 				break;
 			case FESTIVAL:
-				name = "Festival";
-				type = ACTION;
-				cost = 5;
+				aname = "Festival";
+				atype = ACTION;
+				acost = 5;
 				break;
 			case LABORATORY:
-				name = "Laboratory";
-				type = ACTION;
-				cost = 5;
+				aname = "Laboratory";
+				atype = ACTION;
+				acost = 5;
 				break;
 			case LIBRARY:
-				name = "Library";
-				type = ACTION;
-				cost = 5;
+				aname = "Library";
+				atype = ACTION;
+				acost = 5;
 				break;
 			case MARKET:
-				name = "Market";
-				type = ACTION;
-				cost = 5;
+				aname = "Market";
+				atype = ACTION;
+				acost = 5;
 				break;
 			case MINE:
-				name = "Mine";
-				type = ACTION;
-				cost = 5;
+				aname = "Mine";
+				atype = ACTION;
+				acost = 5;
 				break;
 			case WITCH:
-				name = "Witch";
-				type = ACTION;
-				cost = 5;
+				aname = "Witch";
+				atype = ACTION;
+				acost = 5;
 				break;
 			case ADVENTURE:
-				name = "Adventure";
-				type = ACTION;
-				cost = 6;
+				aname = "Adventure";
+				atype = ACTION;
+				acost = 6;
 				break;
 		}
 	}
 	else{
-		r = cardStringToNumber(_name);
+		r = CardStringToNumber(_name);
 		goto flagSetCard;
 	}
 }
-string Card::getName(){
-	return name;
+string Card::GetName(){
+	return aname;
 }
 
-bool Card::isAction(){
-	if(type == ACTION){
+bool Card::IsAction(){
+	if(atype == ACTION){
 		return true;
 	}
 	else{
@@ -242,160 +242,160 @@ bool Card::isAction(){
 	}
 }
 
-cardType Card::getType(){
-	return type;
+cardType Card::GetType(){
+	return atype;
 }
 
 /* Input << player */
 /* Output >> -1: wrong action, 0: done, else: special case */
-int Card::cardAction(Player *player, string cardName, Shop *shop){
-	int r = cardStringToNumber(cardName);
+int Card::CardAction(Player *player, string cardName, Shop *shop){
+	int r = CardStringToNumber(cardName);
 	cout << "cardaction in : " << cardName << ", out : " << r << endl;
 	switch(r){
 		case CELLAR:
-			return actionCellar(player);
+			return ActionCellar(player);
 		case CHAPEL:
-			return actionChapel(player);
+			return ActionChapel(player);
 		case MOAT:
-			return actionMoat(player);
+			return ActionMoat(player);
 		case CHANCELLOR:
-			return actionChancellor(player);
+			return ActionChancellor(player);
 		case VILIAGE:
-			return actionViliage(player);
+			return ActionViliage(player);
 		case WOODCUTTER:
-			return actionWoodcutter(player);
+			return ActionWoodcutter(player);
 		case WORKSHOP:
-			return actionWorkshop(player);
+			return ActionWorkshop(player);
 		case BUREAUCRAT:
-			return actionBureaucrat(player);
+			return ActionBureaucrat(player);
 		case FEAST:
-			return actionFeast(player);
+			return ActionFeast(player);
 		case GARDENS:
 			return -1;
 		case MILITIA:
-			return actionMilitia(player);
+			return ActionMilitia(player);
 		case MONEYLENDER:
-			return actionMoneylender(player);
+			return ActionMoneylender(player);
 		case REMODEL:
-			return actionRemodel(player, shop);
+			return ActionRemodel(player, shop);
 		case SMITHY:
-			return actionSmithy(player);
+			return ActionSmithy(player);
 		case SPY:
-			return actionSpy(player);
+			return ActionSpy(player);
 		case THIEF:
-			return actionThief(player);
+			return ActionThief(player);
 		case THRONEROOM:
-			return actionThroneroom(player);
+			return ActionThroneroom(player);
 		case COUNCILROOM:
-			return actionCouncilroom(player);
+			return ActionCouncilroom(player);
 		case FESTIVAL:
-			return actionFestival(player);
+			return ActionFestival(player);
 		case LABORATORY:
-			return actionLaboratory(player);
+			return ActionLaboratory(player);
 		case LIBRARY:
-			return actionLibrary(player);
+			return ActionLibrary(player);
 		case MARKET:
-			return actionMarket(player);
+			return ActionMarket(player);
 		case MINE:
-			return actionMine(player);
+			return ActionMine(player);
 		case WITCH:
-			return actionWitch(player);
+			return ActionWitch(player);
 		case ADVENTURE:
-			return actionAdventure(player);
+			return ActionAdventure(player);
 		default:
 			return -1;
 	}
 }
-int Card::actionAdventure(Player *player){
-	int client = player->getClient();
+int Card::ActionAdventure(Player *player){
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->revealDeck(TREASURE,2,HAND,DISCARD);
+	player->RevealDeck(TREASURE,2,HAND,DISCARD);
 	return 0;
 };
 
-int Card::actionBureaucrat(Player *player){
-	int client = player->getClient();
+int Card::ActionBureaucrat(Player *player){
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->gainCard("Silver", 1, DECK);
+	player->GainCard("Silver", 1, DECK);
 	return BUREAUCRAT;
 };
 
-int Card::actionCellar(Player *player){
-	int client = player->getClient();
+int Card::ActionCellar(Player *player){
+	int client = player->GetClient();
 	int temp = CELLAR;
 	send(client,&temp,sizeof(int),0);
 	recv(client,&temp,sizeof(int),0);
-	player->addAction(1);
-	int count = player->discardCard(temp);
-	player->drawCard(count);
+	player->AddAction(1);
+	int count = player->DiscardCard(temp);
+	player->DrawCard(count);
 	return 0;
 };
-int Card::actionChancellor(Player *player){
-	int client = player->getClient();
+int Card::ActionChancellor(Player *player){
+	int client = player->GetClient();
 	int temp = CHANCELLOR;
 	char choice;
 	send(client,&temp,sizeof(int),0);
 	recv(client,&choice,sizeof(char),0);
 	if(choice == 'y'){
-		player->discardDeck(player->getDeckSize());
+		player->DiscardDeck(player->GetDeckSize());
 	}
-	player->addCoin(2);
+	player->AddCoin(2);
 	return 0;
 }
-int Card::actionChapel(Player *player){
-	int client = player->getClient();
+int Card::ActionChapel(Player *player){
+	int client = player->GetClient();
 	int temp = CHAPEL;
 	int count;
 	send(client,&temp,sizeof(int),0);
 	recv(client,&count,sizeof(int),0);
 	for(int i=0;i<count;i++){
-		player->sendHandList();
+		player->SendHandList();
 		recv(client,&temp,sizeof(int),0);
-		player->trashCard(temp);
+		player->TrashCard(temp);
 	}
 	return 0;
 };
-int Card::actionCouncilroom(Player *player){
-	int client = player->getClient();
+int Card::ActionCouncilroom(Player *player){
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->drawCard(4);
-	player->addBuy(1);
+	player->DrawCard(4);
+	player->AddBuy(1);
 	return COUNCILROOM;
 };
-int Card::actionFeast(Player *player){
-	int client = player->getClient();
+int Card::ActionFeast(Player *player){
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
 	//player.gainCardChoose(1,5,DISCARD);
 	return FEAST;
 };
-int Card::actionFestival(Player *player) {
-	int client = player->getClient();
+int Card::ActionFestival(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->addAction(2);
-	player->addBuy(1);
-	player->addCoin(2);
+	player->AddAction(2);
+	player->AddBuy(1);
+	player->AddCoin(2);
 	return 0;
 };
-int Card::actionLaboratory(Player *player) {
-	int client = player->getClient();
+int Card::ActionLaboratory(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->drawCard(2);
-	player->addAction(1);
+	player->DrawCard(2);
+	player->AddAction(1);
 	return 0;
 };
-int Card::actionLibrary(Player *player) {
-	int client = player->getClient();
+int Card::ActionLibrary(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	while (player->getCardCount() < 7) {
-		Card *top = player->getDeckFront();
-		if (top->isAction()) {
+	while (player->GetCardCount() < 7) {
+		Card *top = player->GetDeckFront();
+		if (top->IsAction()) {
 /*
 			temp = 1;
 			send(client,&temp,sizeof(int),0);
@@ -413,83 +413,83 @@ int Card::actionLibrary(Player *player) {
 
 			}
 */
-			player->discardDeck(1);
+			player->DiscardDeck(1);
 		}
 		else {
-			player->drawCard(1);
+			player->DrawCard(1);
 		}
 	}
 	return 0;
 }
-int Card::actionMarket(Player *player) {
-	int client = player->getClient();
+int Card::ActionMarket(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->drawCard(1);
-	player->addAction(1);
-	player->addBuy(1);
-	player->addCoin(1);
+	player->DrawCard(1);
+	player->AddAction(1);
+	player->AddBuy(1);
+	player->AddCoin(1);
 	return 0;
 };
-int Card::actionMilitia(Player *player) {
-	int client = player->getClient();
+int Card::ActionMilitia(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->addCoin(1);
+	player->AddCoin(1);
 	return MILITIA;
 };
-int Card::actionMine(Player *player) {
-	int client = player->getClient();
+int Card::ActionMine(Player *player) {
+	int client = player->GetClient();
 	int temp = MINE;
 	send(client,&temp,sizeof(int),0);
-	player->sendHandList();
+	player->SendHandList();
 	recv(client,&temp,sizeof(int),0);
-	if(temp < 0 || temp >= player->getHandSize()){
+	if(temp < 0 || temp >= player->GetHandSize()){
 	}
-	else if(player->getHandName(temp) == "Copper"){
+	else if(player->GetHandName(temp) == "Copper"){
 		Card c;
-		c.setCard("Silver");
-		player->trashCard(temp);
+		c.SetCard("Silver");
+		player->TrashCard(temp);
 		player->gainCard(c,1,HAND);
 	}
-	else if(player->getHandName(temp) == "Silver"){
+	else if(player->GetHandName(temp) == "Silver"){
 		Card c;
-		c.setCard("Gold");
-		player->trashCard(temp);
+		c.SetCard("Gold");
+		player->TrashCard(temp);
 		player->gainCard(c,1,HAND);
 	}
-	else if(player->getHandName(temp) == "Gold"){
+	else if(player->GetHandName(temp) == "Gold"){
 		Card c;
-		c.setCard("Gold");
-		player->trashCard(temp);
+		c.SetCard("Gold");
+		player->TrashCard(temp);
 		player->gainCard(c,1,HAND);
 	}
 	else{
 	}
 	return 0;
 }
-int Card::actionMoat(Player *player) {
-	int client = player->getClient();
+int Card::ActionMoat(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->drawCard(2);
+	player->DrawCard(2);
 	return 0;
 }
-int Card::actionMoneylender(Player *player) {
-	int client = player->getClient();
+int Card::ActionMoneylender(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	for(int i=0;i<player->getHandSize();i++){
-		if(player->getHandName(i) == "Copper"){
-			player->trashCard(i);
-			player->addCoin(3);
+	for(int i=0;i<player->GetHandSize();i++){
+		if(player->GetHandName(i) == "Copper"){
+			player->TrashCard(i);
+			player->AddCoin(3);
 			break;
 		}
 	}
 	return 0;
 }
-int Card::actionRemodel(Player *player, Shop *shop) {
-	int client = player->getClient();
+int Card::ActionRemodel(Player *player, Shop *shop) {
+	int client = player->GetClient();
 	int temp = REMODEL;
 	send(client,&temp,sizeof(int),0);
 /*
@@ -498,11 +498,11 @@ int Card::actionRemodel(Player *player, Shop *shop) {
 		player.gainCard(ANY, 1, value + 2, DISCARD);
 	}
 */
-	player->sendHandList();
+	player->SendHandList();
 	recv(client,&temp,sizeof(int),0);
-	int value = player->getHand(temp)->getCost() + 2;
+	int value = player->GetHand(temp)->GetCost() + 2;
 	int choose;
-	player->trashCard(temp);
+	player->TrashCard(temp);
 
 	send(client,&value,sizeof(int),0);
 	recv(client,&choose,sizeof(int),0);
@@ -510,28 +510,28 @@ int Card::actionRemodel(Player *player, Shop *shop) {
 	}
 	else{
 		choose--;
-		if(value >= shop->getCardCost(choose) && shop->getCardRemain(choose) > 0){
-			player->gainCard(shop->getCard(choose), 1, DISCARD);
-			shop->updateCardRemain(choose,-1);
+		if(value >= shop->GetCardCost(choose) && shop->GetCardRemain(choose) > 0){
+			player->gainCard(shop->GetCard(choose), 1, DISCARD);
+			shop->UpdateCardRemain(choose,-1);
 		}
 		else{
 		}
 	}
 	return 0;
 }
-int Card::actionSmithy(Player *player) {
-	int client = player->getClient();
+int Card::ActionSmithy(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->drawCard(3);
+	player->DrawCard(3);
 	return 0;
 }
-int Card::actionSpy(Player *player){
-	int client = player->getClient();
+int Card::ActionSpy(Player *player){
+	int client = player->GetClient();
 	int temp = SPY;
 	send(client,&temp,sizeof(int),0);
-	player->drawCard(1);
-	player->addAction(1);
+	player->DrawCard(1);
+	player->AddAction(1);
 /*
 	char choice;
 	cout << "Reveal your deck : " << top->getName() << endl;
@@ -547,54 +547,54 @@ int Card::actionSpy(Player *player){
 */
 	return SPY;
 }
-int Card::actionThief(Player *player) {
-	int client = player->getClient();
+int Card::ActionThief(Player *player) {
+	int client = player->GetClient();
 	int temp = THIEF;
 	send(client,&temp,sizeof(int),0);
 	return THIEF;
 }
-int Card::actionThroneroom(Player *player) {
-	int client = player->getClient();
+int Card::ActionThroneroom(Player *player) {
+	int client = player->GetClient();
 	int temp = THRONEROOM;
 	send(client,&temp,sizeof(int),0);
 	return THRONEROOM;
 }
-int Card::actionViliage(Player *player) {
-	int client = player->getClient();
+int Card::ActionViliage(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->drawCard(1);
-	player->addAction(2);
+	player->DrawCard(1);
+	player->AddAction(2);
 	return 0;
 }
-int Card::actionWitch(Player *player) {
-	int client = player->getClient();
+int Card::ActionWitch(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->drawCard(2);
+	player->DrawCard(2);
 	return WITCH;
 }
-int Card::actionWoodcutter(Player *player) {
-	int client = player->getClient();
+int Card::ActionWoodcutter(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
-	player->addCoin(2);
-	player->addBuy(1);
+	player->AddCoin(2);
+	player->AddBuy(1);
 	return 0;
 }
-int Card::actionWorkshop(Player *player) {
-	int client = player->getClient();
+int Card::ActionWorkshop(Player *player) {
+	int client = player->GetClient();
 	int temp = 0;
 	send(client,&temp,sizeof(int),0);
 	player->gainCard(ANY, 1, 4, DISCARD);
 	return 0;
 }
-void Card::printCard(){
-	cout << name << endl;
+void Card::PrintCard(){
+	cout << aname << endl;
 };
-int Card::getValue(){
-	return value;
+int Card::GetValue(){
+	return avalue;
 };
-int Card::getCost(){
-	return cost;
+int Card::GetCost(){
+	return acost;
 };
