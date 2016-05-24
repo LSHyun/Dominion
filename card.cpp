@@ -37,6 +37,8 @@ int Card::cardStringToNumber(string cardName){
 }
 
 void Card::setCard(string _name){
+	cout << _name << endl;
+	int r = (rand() % TOTALACTION) + 1;
 	if(_name == "Copper"){
 		name = "Copper";
 		type = TREASURE;
@@ -80,7 +82,7 @@ void Card::setCard(string _name){
 		score = -1;
 	}
 	else if(_name == "RAND"){
-		int r = (rand() % TOTALACTION) + 1;
+flagSetCard:
 		switch(r){
 			case CELLAR:
 				name = "Cellar";
@@ -163,7 +165,7 @@ void Card::setCard(string _name){
 				cost = 4;
 				break;
 			case THRONEROOM:
-				name = "ThroneRoom";
+				name = "Throneroom";
 				type = ACTION;
 				cost = 4;
 				break;
@@ -209,6 +211,10 @@ void Card::setCard(string _name){
 				break;
 		}
 	}
+	else{
+		r = cardStringToNumber(_name);
+		goto flagSetCard;
+	}
 }
 string Card::getName(){
 	return name;
@@ -231,6 +237,7 @@ cardType Card::getType(){
 /* Output >> -1: wrong action, 0: done, else: special case */
 int Card::cardAction(Player player, string cardName){
 	int r = cardStringToNumber(cardName);
+	player.setAction(player.getAction()-1);
 	switch(r){
 		case CELLAR:
 			return actionCellar(player);

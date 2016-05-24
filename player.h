@@ -18,6 +18,7 @@ private:
 public:
 	void revealDeck(cardType type, int count, place dest, place other);
 	void gainCard(string name, int count, place dest);
+	void gainCard(Card c, int count, place dest);
 	void gainCard(cardType type, int count, int price, place dest);
 	int discardCard(int count);
 	void setName(string _name);
@@ -42,4 +43,7 @@ public:
 	void initTurn();
 	void shuffle();
 	void discardHand();
+	Card* getHand(int pos);
+	int getAction();
+	void setAction(int _action);
 };

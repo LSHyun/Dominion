@@ -50,3 +50,7 @@ int Shop::getCardCost(int pos){
 void Shop::updateCardRemain(int pos, int value){
 	remainCard[pos] += value;
 };
+
+Card Shop::getCard(int pos){
+	return card[pos];
+};

@@ -14,4 +14,5 @@ public:
 	int getCardRemain(int pos);
 	int getCardCost(int pos);
 	void updateCardRemain(int pos, int value);
+	Card getCard(int pos);
 };
