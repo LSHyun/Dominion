@@ -1,4 +1,15 @@
 #include"simulation.h"
+//============================================================================
+// Name        : Simulation()
+// Author      : SWH,LSH
+// Version     : 1.1
+// Param       : applayer,appbuffer,apclient,apclientNumber,anumber,astate
+// Return      : NULL
+// Deprecated  : Using
+// See         : server.cpp
+// Todo        : initialize Simulation
+// Bug         : No bug
+//============================================================================
 Simulation::Simulation(){
 	applayer = new Player[MAXPLAYER];
 	appbuffer = new char*[MAXPLAYER];
@@ -7,7 +18,17 @@ Simulation::Simulation(){
 	anumber = 0;
 	astate = 0;
 }
-
+//============================================================================
+// Name        : Simulation()
+// Author      : SWH,LSH
+// Version     : 1.1
+// Param       : applayer,appbuffer,apclient,apclientNumber,anumber,astate,anumber
+// Return      : NULL
+// Deprecated  : Using
+// See         : server.cpp
+// Todo        : Some client login, Regist that player
+// Bug         : No bug
+//============================================================================
 void Simulation::RegistPlayer(int *_client, string name, int cNumber){
 	if(anumber < MAXPLAYER){
 		applayer[anumber].SetName(name);
@@ -20,7 +41,17 @@ void Simulation::RegistPlayer(int *_client, string name, int cNumber){
 		cout << "Critical error Occured at Simulation::registerPlayer" << endl;
 	}
 }
-
+//============================================================================
+// Name        : MainRun()
+// Author      : SWH
+// Version     : 1.1
+// Param       : applayer,appbuffer,apclient,apclientNumber,anumber,astate,anumber,ashop,aturn,astate
+// Return      : NULL
+// Deprecated  : Using
+// See         : server.cpp
+// Todo        : initialize and print basic interface
+// Bug         : No bug
+//============================================================================
 void Simulation::MainRun(){
 	char buf[BUFSIZE] = "Game Start\0";
 	for(int i=0;i<anumber;i++){
@@ -38,7 +69,17 @@ void Simulation::MainRun(){
 	}
 	
 }
-
+//============================================================================
+// Name        : Subrun()
+// Author      : SWH
+// Version     : 1.1
+// Param       : applayer,appbuffer,apclient,apclientNumber,anumber,astate,anumber,ashop,aturn,astate
+// Return      : NULL
+// Deprecated  : Using
+// See         : server.cpp
+// Todo        : in the room main flow in game
+// Bug         : No bug
+//============================================================================
 void Simulation::SubRun(int pos){
 	while(astate == 0);
 	cout << "SubRun start " << pos << endl;
@@ -144,7 +185,17 @@ void Simulation::SubRun(int pos){
 		}
 	}
 }
-
+//============================================================================
+// Name        : CNumberToNumber()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apclient
+// Return      : NULL
+// Deprecated  : Using
+// See         :
+// Todo        : client number check
+// Bug         : No bug
+//============================================================================
 int Simulation::CNumberToNumber(int cNumber){
 	for(int i=0;i<MAXPLAYER;i++){
 		if(apclientNumber[i] == cNumber){
@@ -153,7 +204,17 @@ int Simulation::CNumberToNumber(int cNumber){
 	}
 	return -1;
 }
-
+//============================================================================
+// Name        : SendPlayerList()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apclient, anumber
+// Return      : NULL
+// Deprecated  : Using
+// See         : simulation.cpp/SubRun
+// Todo        : send player list to some client
+// Bug         : No bug
+//============================================================================
 void Simulation::SendPlayerList(int pos){
 	int temp = anumber;
 	send(apclient[pos],&temp,sizeof(int),0);
@@ -163,7 +224,17 @@ void Simulation::SendPlayerList(int pos){
 		send(apclient[pos],appbuffer[pos],BUFSIZE,0);
 	}
 }
-
+//============================================================================
+// Name        : SendShopList()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apclient, anumber, ashop
+// Return      : NULL
+// Deprecated  : Using
+// See         : simulation.cpp/SubRun
+// Todo        : send shop list to some client
+// Bug         : No bug
+//============================================================================
 void Simulation::SendShopList(int pos){
 	int temp = CARDCOUNT;
 	send(apclient[pos],&temp,sizeof(int),0);
@@ -172,7 +243,17 @@ void Simulation::SendShopList(int pos){
 		send(apclient[pos],appbuffer[pos],BUFSIZE,0);
 	}
 }
-
+//============================================================================
+// Name        : SendShopList()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apclient, anumber, aplayer
+// Return      : NULL
+// Deprecated  : Using
+// See         : simulation.cpp/SubRun
+// Todo        : send hand cards list to some client
+// Bug         : No bug
+//============================================================================
 void Simulation::SendHandList(int pos){
 	int temp = applayer[pos].GetHandSize();
 	send(apclient[pos],&temp,sizeof(int),0);
