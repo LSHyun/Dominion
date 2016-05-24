@@ -3,54 +3,133 @@
 
 using namespace std;
 
-void Shop::initShop(int _count){
-	playerCount = _count;
+//============================================================================
+// Name        : InitShop()
+// Author      : SWH
+// Version     : 1.1
+// Param       : acard, aremaincard
+// Return      : NULL
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : initialize shop card
+// Bug         : No bug
+//============================================================================
+void Shop::InitShop(int _count){
+	aplayerCount = _count;
 	/* This is for original dominion */
-	card[0].setCard("Copper");
-	card[1].setCard("Silver");
-	card[2].setCard("Gold");
-	card[3].setCard("Estate");
-	card[4].setCard("Duchy");
-	card[5].setCard("Province");
-	card[6].setCard("Curse");
+	acard[0].SetCard("Copper");
+	acard[1].SetCard("Silver");
+	acard[2].SetCard("Gold");
+	acard[3].SetCard("Estate");
+	acard[4].SetCard("Duchy");
+	acard[5].SetCard("Province");
+	acard[6].SetCard("Curse");
 	for(int i=7;i<CARDCOUNT;i++){
-		card[i].setCard("RAND");
-		if(card[i].getType() == VICTORY){
-			remainCard[i] = 12;
+		acard[i].SetCard("RAND");
+		if(acard[i].GetType() == VICTORY){
+			aremainCard[i] = 12;
 		}
 		else{
-			remainCard[i] = 10;
+			aremainCard[i] = 10;
 		}
 	}
-	remainCard[0] = playerCount * 10;
-	remainCard[1] = playerCount * 10;
-	remainCard[2] = playerCount * 10;
-	remainCard[3] = 12;
-	remainCard[4] = 12;
-	remainCard[5] = 10;
-	remainCard[6] = playerCount * 10;
+	aremainCard[0] = aplayerCount * 10;
+	aremainCard[1] = aplayerCount * 10;
+	aremainCard[2] = aplayerCount * 10;
+	aremainCard[3] = 12;
+	aremainCard[4] = 12;
+	aremainCard[5] = 10;
+	aremainCard[6] = aplayerCount * 10;
 }
 
-void Shop::printShop(){
+//============================================================================
+// Name        : PrintShop()
+// Author      : SWH
+// Version     : 1.1
+// Param       : acard, aremaincard
+// Return      : NULL
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : print out card name and card remain
+// Bug         : No bug
+//============================================================================
+void Shop::PrintShop(){
 	for(int i=0;i<CARDCOUNT;i++){
-		cout << card[i].getName() << ", " << remainCard[i] << endl;
+		cout << acard[i].GetName() << ", " << aremainCard[i] << endl;
 	}
 };
 
-string Shop::getCardName(int pos){
-	return card[pos].getName();
+//============================================================================
+// Name        : GetCardName()
+// Author      : SWH
+// Version     : 1.1
+// Param       : acard
+// Return      : card.name
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : get card name
+// Bug         : No bug
+//============================================================================
+string Shop::GetCardName(int pos){
+	return acard[pos].GetName();
 };
 
-int Shop::getCardRemain(int pos){
-	return remainCard[pos];
-};
-int Shop::getCardCost(int pos){
-	return card[pos].getCost();
-};
-void Shop::updateCardRemain(int pos, int value){
-	remainCard[pos] += value;
+//============================================================================
+// Name        : GetCardRemain()
+// Author      : SWH
+// Version     : 1.1
+// Param       : aremaincard
+// Return      : remaincard
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : get card remain
+// Bug         : No bug
+//============================================================================
+int Shop::GetCardRemain(int pos){
+	return aremainCard[pos];
 };
 
-Card Shop::getCard(int pos){
-	return card[pos];
+//============================================================================
+// Name        : GetCardCost()
+// Author      : SWH
+// Version     : 1.1
+// Param       : acard
+// Return      : acard
+// Deprecated  : Using
+// See         : simulation.cpp card.cpp
+// Todo        : get card cost
+// Bug         : No bug
+//============================================================================
+int Shop::GetCardCost(int pos){
+	return acard[pos].GetCost();
+};
+
+//============================================================================
+// Name        : UpdateCardRemain()
+// Author      : SWH
+// Version     : 1.1
+// Param       : aremaincard
+// Return      : areamincard
+// Deprecated  : Using
+// See         : simulation.cpp card.cpp
+// Todo        : remain card number adjust
+// Bug         : No bug
+//============================================================================
+void Shop::UpdateCardRemain(int pos, int value){
+	aremainCard[pos] += value;
+};
+
+//============================================================================
+// Name        : GetCard()
+// Author      : SWH
+// Version     : 1.1
+// Param       : acard
+// Return      : acard
+// Deprecated  : Using
+// See         : simulation.cpp card.cpp
+// Todo        : get that card
+// Bug         : No bug
+//============================================================================
+Card Shop::GetCard(int pos){
+	return acard[pos];
 };

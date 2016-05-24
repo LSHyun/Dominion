@@ -19,22 +19,24 @@ using namespace std;
 
 class Simulation{
 private:
-	int state, turn, number;
-	int *client;
-	Player *player;
-	char **buffer;
-	int *clientNumber;
-	Shop shop;
+	int astate;
+	int aturn;
+	int anumber;
+	int *apclient;
+	Player *applayer;
+	char **appbuffer;
+	int *apclientNumber;
+	Shop ashop;
 public:
 	Simulation();
-	void mainRun();
-	void subRun(int number);
-	void registPlayer(int *_client, string name, int cNumber);
-	void broadcast(char* text);
-	void clientRun(int cNumber);
-	int cNumberToNumber(int cNumber);
-	void sendPlayerList(int pos);
-	void sendShopList(int pos);
-	void initPlayerCard(int pos);
-	void sendHandList(int pos);
+	void MainRun();
+	void SubRun(int number);
+	void RegistPlayer(int *_client, string name, int cNumber);
+	void Broadcast(char* text);
+	void ClientRun(int cNumber);
+	int CNumberToNumber(int cNumber);
+	void SendPlayerList(int pos);
+	void SendShopList(int pos);
+	void InitPlayerCard(int pos);
+	void SendHandList(int pos);
 };

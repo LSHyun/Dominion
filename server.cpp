@@ -24,47 +24,74 @@ struct info{
 
 class MainServer{
 private:
-	int server, *client, totalPlayerCount, readyPlayerCount;
-	pthread_t ptClient[CLIENTCOUNT];
-	int *status;
-	struct sockaddr_in server_addr;
-	struct sockaddr_in client_addr[CLIENTCOUNT];
-	socklen_t client_size[CLIENTCOUNT];
-	string *name;
-	Simulation *simulation;
+	int aserver;
+	int *apclient;
+	int atotalPlayerCount;
+	int areadyPlayerCount;
+	pthread_t aptClient[CLIENTCOUNT];
+	int *apstatus;
+	struct sockaddr_in aserver_addr;
+	struct sockaddr_in aclient_addr[CLIENTCOUNT];
+	socklen_t aclient_size[CLIENTCOUNT];
+	string *apname;
+	Simulation *apsimulation;
 public:
-	void run();
-	void makeNewRoom();
-	void end();
-	void init();
+	void Run();
+	void MakeNewRoom();
+	void End();
+	void Init();
 	//void *newConnection(void*);
-	int getEmptyPlace();
-	int getEmptyClientNumber();
+	int GetEmptyPlace();
+	int GetEmptyClientNumber();
 };
 class SubServer{
 	string name;
 	int people;
 };
-void MainServer::makeNewRoom(){
-	int number = getEmptyPlace();
+
+//============================================================================
+// Name        : MakeNewRoom()
+// Author      : SWH
+// Version     : 1.1
+// Param       :
+// Return      : NULL
+// Deprecated  : not using
+// See         :
+// Todo        : make new room
+// Bug         : No execute
+//===========================================================================
+void MainServer::MakeNewRoom(){
+	int number = GetEmptyPlace();
 };
-void MainServer::run(){
-	int number = getEmptyClientNumber();
+
+//============================================================================
+// Name        : Run()
+// Author      : SWH
+// Version     : 1.1
+// Param       : aserver, apclient aclient_size
+// Return      : NULL
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : make new room
+// Bug         :
+//===========================================================================
+void MainServer::Run(){
+	int number = GetEmptyClientNumber();
 	char buffer[20];
 	
-	server = socket(AF_INET, SOCK_STREAM, 0);
-	if(server < 0){
+	aserver = socket(AF_INET, SOCK_STREAM, 0);
+	if(aserver < 0){
 		cout << "Error establising connection." << endl;
 		exit(1);
 	}
 	cout << "Server Sockect connection created..." << endl;
 
-	server_addr.sin_family = AF_INET;
-	server_addr.sin_addr.s_addr = htons(INADDR_ANY);
-	server_addr.sin_port = htons(MAINPORT);
+	aserver_addr.sin_family = AF_INET;
+	aserver_addr.sin_addr.s_addr = htons(INADDR_ANY);
+	aserver_addr.sin_port = htons(MAINPORT);
 
 
-	if(bind(server, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0){
+	if(bind(aserver, (struct sockaddr*)&aserver_addr, sizeof(aserver_addr)) < 0){
 		cout << "Error binding socket..." << endl;
 		exit(1);
 	}
@@ -73,35 +100,46 @@ void MainServer::run(){
 	while(1){
 		int len = sprintf(buffer,"%d",number);
 		struct info *_info = new info;
-		listen(server,1);
-		client_size[number] = sizeof(client_addr[number]);
-		client[number] = accept(server, (struct sockaddr*)&client_addr[number], &client_size[number]);
-		status[number] = 1;
+		listen(aserver,1);
+		aclient_size[number] = sizeof(aclient_addr[number]);
+		apclient[number] = accept(aserver, (struct sockaddr*)&aclient_addr[number], &aclient_size[number]);
+		apstatus[number] = 1;
 
-		_info->client = client;
+		_info->client = apclient;
 		_info->number = number;
-		_info->status = status;
-		_info->totalPlayerCount = &totalPlayerCount;
-		_info->readyPlayerCount = &readyPlayerCount;
-		_info->name = name;
-		_info->simulation = simulation;
-		++totalPlayerCount;
-		int temp = pthread_create(&ptClient[number],NULL,newConnection,_info);
+		_info->status = apstatus;
+		_info->totalPlayerCount = &atotalPlayerCount;
+		_info->readyPlayerCount = &areadyPlayerCount;
+		_info->name = apname;
+		_info->simulation = apsimulation;
+		++atotalPlayerCount;
+		int temp = pthread_create(&aptClient[number],NULL,newConnection,_info);
 		//int temp = pthread_create(&ptClient[number],NULL,newConnection,&client[number]);
 		
-		number = getEmptyClientNumber();
+		number = GetEmptyClientNumber();
 		while(number == -1){
 			sleep(1);
-			number = getEmptyClientNumber();
+			number = GetEmptyClientNumber();
 		}
 	}
 };
 
+//============================================================================
+// Name        : GetEmptyClientNumber()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apstatus
+// Return      : NULL
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : check can login client number
+// Bug         :
+//===========================================================================
 /* status = -1 : empty, 0 : wait client, 1 : running */
-int MainServer::getEmptyClientNumber(){
+int MainServer::GetEmptyClientNumber(){
 	
 	for(int i=0;i<CLIENTCOUNT;i++){
-		if(status[i] == -1){
+		if(apstatus[i] == -1){
 			cout << "return value : " << i << endl;
 			return i;
 		}
@@ -109,23 +147,68 @@ int MainServer::getEmptyClientNumber(){
 	return -1;
 }
 
-void MainServer::end(){
+//============================================================================
+// Name        : End()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apstatus
+// Return      : NULL
+// Deprecated  : not using
+// See         : server.cpp
+// Todo        : ending status
+// Bug         : No execute
+//===========================================================================
+void MainServer::End(){
 };
 
-void MainServer::init(){
-	simulation = new Simulation;
-	name = new string[CLIENTCOUNT];
-	status = new int[CLIENTCOUNT];
-	client = new int[CLIENTCOUNT];
+//============================================================================
+// Name        : Init()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apsimulation apname apstatus apclient
+// Return      : NULL
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : initialize server
+// Bug         :
+//===========================================================================
+void MainServer::Init(){
+	apsimulation = new Simulation;
+	apname = new string[CLIENTCOUNT];
+	apstatus = new int[CLIENTCOUNT];
+	apclient = new int[CLIENTCOUNT];
 	for(int i=0;i<CLIENTCOUNT;i++){
 		//status[i] = new int;
-		status[i] = -1;
+		apstatus[i] = -1;
 	}
 };
 
-int MainServer::getEmptyPlace(){
+//============================================================================
+// Name        : GetEmptyPlace()
+// Author      : SWH
+// Version     : 1.1
+// Param       :
+// Return      : 0
+// Deprecated  : not using
+// See         : server.cpp
+// Todo        : ?
+// Bug         :
+//===========================================================================
+int MainServer::GetEmptyPlace(){
 	return 0;
 }
+
+//============================================================================
+// Name        : newConnection()
+// Author      : SWH
+// Version     : 1.1
+// Param       : client server
+// Return      : 0
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : client want new connection
+// Bug         :
+//===========================================================================
 //void* MainServer::newConnection(void *arg){
 void* newConnection(void *arg){
 	struct info *temp = (struct info*)arg;
@@ -170,15 +253,15 @@ void* newConnection(void *arg){
 		else if(command == 2){
 			ready = 1;
 			++*readyPlayerCount;
-			simulation->registPlayer(&client[number],name[number],number);
+			simulation->RegistPlayer(&client[number],name[number],number);
 			if(*readyPlayerCount == *totalPlayerCount){
 				pthread_t pt;
 				int temp = pthread_create(&pt,NULL,simulationMainRun,simulation);
-				simulation->subRun(number);
+				simulation->SubRun(number);
 			}
 			else{
 				while(*readyPlayerCount == *totalPlayerCount);
-				simulation->subRun(number);
+				simulation->SubRun(number);
 			}
 			
 		}
@@ -197,16 +280,38 @@ void* newConnection(void *arg){
 	while(command != 3);
 };
 
+//============================================================================
+// Name        : simulationMainRun()
+// Author      : SWH
+// Version     : 1.1
+// Param       : simulation
+// Return      : NULL
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : start simulation
+// Bug         :
+//===========================================================================
 void *simulationMainRun(void *arg){
 	cout << "Main run start" << endl;
 	Simulation *simulation = (Simulation *)arg;
-	simulation->mainRun();
+	simulation->MainRun();
 };
 
+//============================================================================
+// Name        : main()
+// Author      : SWH
+// Version     : 1.1
+// Param       : mainserver
+// Return      : NULL
+// Deprecated  : using
+// See         :
+// Todo        : is main
+// Bug         :
+//===========================================================================
 int main(){
 	MainServer mainServer;
-	mainServer.init();
-	mainServer.run();
+	mainServer.Init();
+	mainServer.Run();
 	return 0;
 };
 

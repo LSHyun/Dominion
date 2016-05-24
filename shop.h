@@ -4,15 +4,15 @@
 
 class Shop{
 private:
-	Card card[CARDCOUNT];
-	int remainCard[CARDCOUNT];
-	int playerCount;
+	Card acard[CARDCOUNT];
+	int aremainCard[CARDCOUNT];
+	int aplayerCount;
 public:
-	void initShop(int _count);
-	void printShop();
-	string getCardName(int pos);
-	int getCardRemain(int pos);
-	int getCardCost(int pos);
-	void updateCardRemain(int pos, int value);
-	Card getCard(int pos);
+	void InitShop(int _count);
+	void PrintShop();
+	string GetCardName(int pos);
+	int GetCardRemain(int pos);
+	int GetCardCost(int pos);
+	void UpdateCardRemain(int pos, int value);
+	Card GetCard(int pos);
 };
