@@ -133,7 +133,6 @@ void Shop::UpdateCardRemain(int pos, int value){
 Card Shop::GetCard(int pos){
 	return acard[pos];
 };
-
 //============================================================================
 // Name        : IsFinished()
 // Author      : SWH
@@ -162,4 +161,3 @@ bool Shop::IsFinished(){
 		return false;
 	}
 };
-			
