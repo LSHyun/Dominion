@@ -4,7 +4,7 @@
 using namespace std;
 
 #define SUBSERVERSIZE 1
-#define MAINPORT 20000
+#define MAINPORT 20001
 #define CLIENTCOUNT SUBSERVERSIZE * 4
 
 struct clientInfo{
