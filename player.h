@@ -15,7 +15,10 @@ private:
 	int action;
 	int buy;
 	int coin;
+	int client;
 public:
+	void setClient(int _client);
+	int getClient();
 	void revealDeck(cardType type, int count, place dest, place other);
 	void gainCard(string name, int count, place dest);
 	void gainCard(Card c, int count, place dest);
@@ -26,8 +29,7 @@ public:
 	void addCoin(int count);
 	void addAction(int count);
 	void drawCard(int count);
-	int trashCard(cardType type, int count);
-	int trashCard(string name, int count);
+	void trashCard(int pos);
 	int getCardCount();
 	void discardDeck(int count);
 	void gainCardChoose(int count, int cost, place to);
@@ -46,4 +48,6 @@ public:
 	Card* getHand(int pos);
 	int getAction();
 	void setAction(int _action);
+	void sendHandList();
+	int getDeckSize();
 };

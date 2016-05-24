@@ -29,6 +29,7 @@ public:
 	void playGame();
 	void printHandList();
 	void printCommand();
+	void doSpecialAction(int value);
 };
 
 void Client::init(){
@@ -161,18 +162,24 @@ void Client::printCommand(){
 		int action, result;
 		action = 1;
 		do{
-			
 			do{
+				int funcValue;
+				printHandList();
 				cout << "You can use " << action << " action Card!" << endl;
 				cout << "Type number what you want to use" << endl;
 				cin >> result;
 				send(server,&result,sizeof(int),0);
+				recv(server,&funcValue,sizeof(int),0); // -1 : fail, 0 : normal, else : special
+				if(funcValue > 0){
+					doSpecialAction(funcValue);
+				}
 				recv(server,&result,sizeof(int),0);
 			}
 			while(result == -1);
 			recv(server,&action,sizeof(int),0);
 		}
 		while(action > 0);
+		state = BUYSTATE;
 	}
 	if(state == BUYSTATE){
 		int money, buyCount, choose, result;
@@ -197,6 +204,80 @@ void Client::printCommand(){
 		while(buyCount > 0);
 		cout << "Turn end" << endl;
 	}
+}
+
+void Client::doSpecialAction(int value){
+	switch(value){
+		case CELLAR:
+		{	
+			int count;
+			cout << "Discard Card! How many? ";
+			cin >> count;
+			send(server,&count,sizeof(int),0);
+			break;
+		}
+		case CHANCELLOR:
+		{
+			char choice;
+flagChancellor:
+			cout << "Discard Deck? (Y/N) ";
+			cin >> choice;
+			if(choice == 'y' || choice == 'Y'){
+				choice = 'y';
+			}
+			else if(choice == 'n' || choice == 'N'){
+				choice = 'n';
+			}
+			else{
+				goto flagChancellor;
+			}
+			send(server,&choice,sizeof(char),0);
+			break;
+		}
+		case CHAPEL:
+		{
+			int count;
+			cout << "Trash Card! How many?(0~4) ";
+			cin >> count;
+			send(server,&count,sizeof(int),0);
+			for(int i=0;i<count;i++){
+				int temp;
+				printHandList();
+				cout << "Choose Card Number : ";
+				cin >> temp;
+				send(server,&temp,sizeof(int),0);
+			}
+			break;
+		}
+		case REMODEL:
+		{
+			int temp;
+			printHandList();
+			cout << "Trash Card! Choose Card Number : ";
+			cin >> temp;
+			send(server,&temp,sizeof(int),0);
+			recv(server,&temp,sizeof(int),0);
+			cout << "You can get card under " << temp << "coin" << endl;
+			cout << "Choose card number : ";
+			cin >> temp;
+			send(server,&temp,sizeof(int),0);
+			break;
+		}
+
+		case MINE:
+		{
+			int result;
+			printHandList();
+			cout << "Trash treasure card! number? ";
+			cin >> result;
+			send(server,&result,sizeof(int),0);
+			break;
+		}
+		default:
+		{
+		}
+	}
+
 }
 int main(){
 	Client client;
