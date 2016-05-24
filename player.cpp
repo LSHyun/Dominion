@@ -272,3 +272,12 @@ void Player::sendHandList(){
 int Player::getDeckSize(){
 	return deck.size();
 };
+
+void Player::discardHand(int pos){
+	Card card = hand[pos];
+	deque<Card>::iterator it = hand.begin();
+	it += pos;
+	discard.push_back(card);
+	hand.erase(it);
+}
+	

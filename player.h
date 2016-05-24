@@ -24,6 +24,7 @@ public:
 	void gainCard(Card c, int count, place dest);
 	void gainCard(cardType type, int count, int price, place dest);
 	int discardCard(int count);
+	void discardHand(int pos);
 	void setName(string _name);
 	void addBuy(int count);
 	void addCoin(int count);
