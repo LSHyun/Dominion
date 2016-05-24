@@ -11,27 +11,48 @@
 #include<netdb.h>
 #include"serverClient.h"
 #include"player.h"
+//============================================================================
+// Name        : InitTurn()
+// Author      : LSH
+// Version     : 1.1
+// Param       : aaction, abuy, acoin
+// Return      : NULL
+// Deprecated  : Using
+// See         : Simulation.cpp/SubRun
+// Todo        : Initialize player status
+// Bug         : No bug
+//============================================================================
 
-void Player::initTurn(){
-	action = 1;
-	buy = 1;
-	coin = 0;
+void Player::InitTurn(){
+	aaction = 1;
+	abuy = 1;
+	acoin = 0;
 	discardHand();
-	revealDeck(ANY,5,HAND,DISCARD);
+	RevealDeck(ANY,5,HAND,DISCARD);
 }
-
-void Player::initDeck(){
+//============================================================================
+// Name        : InitDeck()
+// Author      : LSH
+// Version     : 1.1
+// Param       : adeck
+// Return      : NULL
+// Deprecated  : Using
+// See         : Simulation.cpp/MainRun
+// Todo        : Initialize player deck and shuffle
+// Bug         : No bug
+//============================================================================
+void Player::InitDeck(){
 	int temp[10];
 	Card tempCard;
 	for(int i=0;i<10;i++){
 		temp[i] = rand() % 65536;
 	}
-	deck.resize(10);
+	adeck.resize(10);
 	for(int i=0;i<7;i++){
-		deck[i].setCard("Copper");
+		adeck[i].SetCard("Copper");
 	}
 	for(int i=7;i<10;i++){
-		deck[i].setCard("Estate");
+		adeck[i].SetCard("Estate");
 	}
 	for(int i=0;i<9;i++){
 		for(int k=1;k<10;k++){
@@ -39,26 +60,36 @@ void Player::initDeck(){
 				int t = temp[i];
 				temp[i] = temp[k];
 				temp[k] = t;
-				tempCard = deck[i];
-				deck[i] = deck[k];
-				deck[k] = tempCard;
+				tempCard = adeck[i];
+				adeck[i] = adeck[k];
+				adeck[k] = tempCard;
 			}
 		}
 	}
 };
-
-void Player::revealDeck(int type, int count, place dest, place other){
+//============================================================================
+// Name        : RevealDeck()
+// Author      : LSH
+// Version     : 1.1
+// Param       : adeck, ahand
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp/ActionAdventure , player.cpp/InitTurn, DrawCard
+// Todo        : Card revealed in deck and using somewhere
+// Bug         : No bug But, not yet comletely using
+//============================================================================
+void Player::RevealDeck(int type, int count, place dest, place other){
 	for(int i=0;i<count;i++){
-		if(deck.size() == 0){
-			shuffle();
+		if(adeck.size() == 0){
+			Shuffle();
 		}
-		if(deck.size() == 0){
+		if(adeck.size() == 0){
 			break;
 		}
-		Card card = deck.front();
-		if(type != ANY && type != card.getType()){
+		Card card = adeck.front();
+		if(type != ANY && type != card.GetType()){
 			if(other == DISCARD){
-				discard.push_back(card);
+				adiscard.push_back(card);
 		
 			}
 			else if(other == TRASH){
@@ -67,58 +98,98 @@ void Player::revealDeck(int type, int count, place dest, place other){
 		}
 		else{
 			if(dest == HAND){
-				hand.push_back(card);
+				ahand.push_back(card);
 			}
 		}
-		deck.pop_front();
+		adeck.pop_front();
 	}
 };
-
-void Player::gainCard(string name, int count, place dest){
+//============================================================================
+// Name        : GainCard()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand, adeck, adiscard
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp/ActionBureaucrat
+// Todo        : Gain card some card
+// Bug         : No bug
+//============================================================================
+void Player::GainCard(string name, int count, place dest){
 	for(int i=0;i<count;i++){
 		Card *c = new Card;
-		c->setCard(name);
-		cout << c->getName() << ", " << c->getCost() << endl;
+		c->SetCard(name);
+		cout << c->GetName() << ", " << c->GetCost() << endl;
 		if(dest ==DISCARD){
-			discard.push_back(*c);
+			adiscard.push_back(*c);
 		}
 		else if(dest == HAND){
-			hand.push_back(*c);
+			ahand.push_back(*c);
 		}
 		else if(dest == DECK){
-			deck.push_front(*c);
+			adeck.push_front(*c);
 		}
-		cout << "name : " << c->getName() << endl;
+		cout << "name : " << c->GetName() << endl;
 	}
 };
-
+//============================================================================
+// Name        : gainCard()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand, adeck, adiscard
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp/ActionBureaucrat
+// Todo        : Gain card some card
+// Bug         : No bug
+//============================================================================
 void Player::gainCard(Card c, int count, place dest) {
 	for(int i=0;i<count;i++){
-		cout << c.getName() << ", " << c.getCost() << endl;
+		cout << c.GetName() << ", " << c.GetCost() << endl;
 		if(dest ==DISCARD){
-			discard.push_back(c);
+			adiscard.push_back(c);
 		}
 		else if(dest == HAND){
-			hand.push_back(c);
+			ahand.push_back(c);
 		}
 		else if(dest == DECK){
-			deck.push_front(c);
+			adeck.push_front(c);
 		}
-		cout << "name : " << c.getName() << endl;
+		cout << "name : " << c.GetName() << endl;
 	}
 };
 
-
+//============================================================================
+// Name        : gainCard()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand, adeck, adiscard
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp/ActionBureaucrat
+// Todo        : ?
+// Bug         : ?
+//============================================================================
 void Player::gainCard(cardType type, int count, int price, place dest) {
 };
-
-int Player::discardCard(int count){
+//============================================================================
+// Name        : DiscardCard()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand, adiscard
+// Return      : result
+// Deprecated  : Using
+// See         : card.cpp/ActionCellar , player.cpp/discardHand
+// Todo        : set name
+// Bug         : No bug But, not yet comletely using
+//============================================================================
+int Player::DiscardCard(int count){
 	int result = 0;
 	for(int i=0;i<count;i++){
-		if(hand.size() != 0){
-			Card card = hand.front();
-			discard.push_back(card);
-			hand.pop_front();
+		if(ahand.size() != 0){
+			Card card = ahand.front();
+			adiscard.push_back(card);
+			ahand.pop_front();
 			++result;
 		}
 		else{
@@ -127,157 +198,414 @@ int Player::discardCard(int count){
 	}
 	return result;
 };
-void Player::setName(string _name){
-	name = _name;
+//============================================================================
+// Name        : SetName()
+// Author      : LSH
+// Version     : 1.1
+// Param       : aname
+// Return      : NULL
+// Deprecated  : Using
+// See         : simulation.cpp/RegistPlayer
+// Todo        : set name
+// Bug         : No bug
+//============================================================================
+void Player::SetName(string _name){
+	aname = _name;
 };
-
-string Player::getName(){
-	return name;
+//============================================================================
+// Name        : GetName()
+// Author      : LSH
+// Version     : 1.1
+// Param       : aname
+// Return      : NULL
+// Deprecated  : Using
+// See         : simulation.cpp/SubRun, SendPlayerList
+// Todo        : get name
+// Bug         : No bug
+//============================================================================
+string Player::GetName(){
+	return aname;
 };
-
-void Player::addAction(int count){
-	action += count;
+//============================================================================
+// Name        : AddAction()
+// Author      : LSH
+// Version     : 1.1
+// Param       : aaction
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : additional action function
+// Bug         : No bug
+//============================================================================
+void Player::AddAction(int count){
+	aaction += count;
 };
-
-void Player::drawCard(int count){
-	revealDeck(ANY,count,HAND,DISCARD);
+//============================================================================
+// Name        : DrawCard()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand, discard
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : deck to hand card
+// Bug         : No bug
+//============================================================================
+void Player::DrawCard(int count){
+	RevealDeck(ANY,count,HAND,DISCARD);
 };
-
-void Player::addCoin(int count){
-	coin += count;
+//============================================================================
+// Name        : AddCoin()
+// Author      : LSH
+// Version     : 1.1
+// Param       : acoin
+// Return      : NULL
+// Deprecated  : Using
+// See         : simulator.cpp , card.cpp
+// Todo        : coin add
+// Bug         : No bug
+//============================================================================
+void Player::AddCoin(int count){
+	acoin += count;
 };
-
-void Player::discardDeck(int count){
+//============================================================================
+// Name        : DiscardDeck()
+// Author      : LSH
+// Version     : 1.1
+// Param       : acoin
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : Deck to Discard card
+// Bug         : No bug
+//============================================================================
+void Player::DiscardDeck(int count){
 	for(int i=0;i<count;i++){
-		Card c = deck.front();
-		discard.push_back(c);
-		deck.pop_front();
+		Card c = adeck.front();
+		adiscard.push_back(c);
+		adeck.pop_front();
 	}
 };
-
-void Player::trashCard(int pos){
-	deque<Card>::iterator it = hand.begin();
+//============================================================================
+// Name        : TrashCard()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : delete some card, card goto Trash
+// Bug         : No bug
+//============================================================================
+void Player::TrashCard(int pos){
+	deque<Card>::iterator it = ahand.begin();
 	it += pos;
-	hand.erase(it);
+	ahand.erase(it);
+};
+//============================================================================
+// Name        : AddBuy()
+// Author      : LSH
+// Version     : 1.1
+// Param       : abuy
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : buy chance increase
+// Bug         : No bug
+//============================================================================
+void Player::AddBuy(int count){
+	abuy += count;
 };
 
-void Player::addBuy(int count){
-	buy += count;
+Card* Player::GetDeckFront(){
+};
+//============================================================================
+// Name        : GetCardCount()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand
+// Return      : ahand.size()
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : how many cards in your hand?
+// Bug         : No bug
+//============================================================================
+int Player::GetCardCount(){
+	return ahand.size();
 };
 
-Card* Player::getDeckFront(){
+void Player::GainCardChoose(int count, int cost, place to){
 };
-
-int Player::getCardCount(){
-	return hand.size();
-};
-
-void Player::gainCardChoose(int count, int cost, place to){
-};
-
-void Player::printHand(){
-	for(int i=0;i<hand.size();i++){
-		hand[i].printCard();
+//============================================================================
+// Name        : PrintHand()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : what cards in your hand?
+// Bug         : No bug
+//============================================================================
+void Player::PrintHand(){
+	for(int i=0;i<ahand.size();i++){
+		ahand[i].PrintCard();
 	}
 };
-
-int Player::getHandSize(){
-	return hand.size();
+//============================================================================
+// Name        : GetHandSize()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand
+// Return      : ahand.size()
+// Deprecated  : Using
+// See         : card.cpp simulation.cpp
+// Todo        : how many cards in your hand?
+// Bug         : No bug
+//============================================================================
+int Player::GetHandSize(){
+	return ahand.size();
 };
-
-string Player::getHandName(int pos){
-	return hand[pos].getName();
+//============================================================================
+// Name        : GetHandName()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand
+// Return      : ahand[pos].GetName()  card.Name()
+// Deprecated  : Using
+// See         : card.cpp player.cpp simulation.cpp
+// Todo        : get some position card name
+// Bug         : No bug
+//============================================================================
+string Player::GetHandName(int pos){
+	return ahand[pos].GetName();
 };
-
-int Player::getState(){
-	for(int i=0;i<hand.size();i++){
-		if(hand[i].isAction()){
+//============================================================================
+// Name        : GetState()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand
+// Return      : player state
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : What to do player?
+// Bug         : No bug
+//============================================================================
+int Player::GetState(){
+	for(int i=0;i<ahand.size();i++){
+		if(ahand[i].IsAction()){
 			return ACTIONSTATE;
 		}
 	}
 	return BUYSTATE;
 };
-
-int Player::getMoney(){
+//============================================================================
+// Name        : GetMoney()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand
+// Return      : money
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : How many money you gain?
+// Bug         : No bug
+//============================================================================
+int Player::GetMoney(){
 	int sum = 0;
-	for(int i=0;i<hand.size();i++){
-		sum += hand[i].getValue();
+	for(int i=0;i<ahand.size();i++){
+		sum += ahand[i].GetValue();
 	}
-	sum += coin;
+	sum += acoin;
 	return sum;
 };
-int Player::getBuy(){
-	return buy;
+//============================================================================
+// Name        : GetBuy()
+// Author      : LSH
+// Version     : 1.1
+// Param       : abuy
+// Return      : abuy
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : How many times you buy?
+// Bug         : No bug
+//============================================================================
+int Player::GetBuy(){
+	return abuy;
 };
-
-void Player::shuffle(){
-	for(int i=0;i<discard.size();i++){
-		Card card = discard.front();
-		deck.push_back(card);
-		discard.pop_front();
+//============================================================================
+// Name        : Shuffle()
+// Author      : LSH
+// Version     : 1.1
+// Param       : adiscard, adeck
+// Return      : NULL
+// Deprecated  : Using
+// See         : player.cpp/RevealDeck
+// Todo        : Shuffle discard and go to deck
+// Bug         : No bug
+//============================================================================
+void Player::Shuffle(){
+	for(int i=0;i<adiscard.size();i++){
+		Card card = adiscard.front();
+		adeck.push_back(card);
+		adiscard.pop_front();
 	}
-	int temp[deck.size()];
+	int temp[adeck.size()];
 	Card tempCard;
-	for(int i=0;i<deck.size();i++){
+	for(int i=0;i<adeck.size();i++){
 		temp[i] = rand() % 65536;
 	}
-	for(int i=0;i<deck.size()-1;i++){
-		for(int k=1;k<deck.size();k++){
+	for(int i=0;i<adeck.size()-1;i++){
+		for(int k=1;k<adeck.size();k++){
 			if(temp[i] < temp[k]){
 				int t = temp[i];
 				temp[i] = temp[k];
 				temp[k] = t;
-				tempCard = deck[i];
-				deck[i] = deck[k];
-				deck[k] = tempCard;
+				tempCard = adeck[i];
+				adeck[i] = adeck[k];
+				adeck[k] = tempCard;
 			}
 		}
 	}
 };
-
+//============================================================================
+// Name        : discardHand()
+// Author      : LSH
+// Version     : 1.1
+// Param       : adiscard, ahand
+// Return      : NULL
+// Deprecated  : Using
+// See         : player.cpp/InitTurn
+// Todo        : Hand to discard
+// Bug         : No bug
+//============================================================================
 void Player::discardHand(){
-	int temp = discardCard(hand.size());
+	int temp = DiscardCard(ahand.size());
 };
-
-Card* Player::getHand(int pos){
-	if(pos < hand.size()){
-		return &hand[pos];
+//============================================================================
+// Name        : GetHand()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand
+// Return      : Card
+// Deprecated  : Using
+// See         : card.cpp simulation.cpp
+// Todo        : get some position hand card
+// Bug         : No bug
+//============================================================================
+Card* Player::GetHand(int pos){
+	if(pos < ahand.size()){
+		return &ahand[pos];
 	}
 	else{
 		return NULL;
 	}
 };
-
-int Player::getAction(){
-	return action;
+//============================================================================
+// Name        : GetAction()
+// Author      : LSH
+// Version     : 1.1
+// Param       : aaction
+// Return      : aaction
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : How many times you action?
+// Bug         : No bug
+//============================================================================
+int Player::GetAction(){
+	return aaction;
 };
-void Player::setAction(int _action){
-	action = _action;
+//============================================================================
+// Name        : SetAction()
+// Author      : LSH
+// Version     : 1.1
+// Param       : aaction
+// Return      : aaction
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : set action
+// Bug         : No bug
+//============================================================================
+void Player::SetAction(int _action){
+	aaction = _action;
 };
-void Player::setClient(int _client){
-	client = _client;
+//============================================================================
+// Name        : SetClient()
+// Author      : LSH
+// Version     : 1.1
+// Param       : aname
+// Return      : aaction
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : set client
+// Bug         : No bug
+//============================================================================
+void Player::SetClient(int _client){
+	aclient = _client;
 };
-int Player::getClient(){
-	return client;
+//============================================================================
+// Name        : GetClient()
+// Author      : LSH
+// Version     : 1.1
+// Param       : aclient
+// Return      : aclient
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : get client
+// Bug         : No bug
+//============================================================================
+int Player::GetClient(){
+	return aclient;
 };
-void Player::sendHandList(){
-	int temp = hand.size();
+//============================================================================
+// Name        : SendHandList()
+// Author      : LSH
+// Version     : 1.1
+// Param       : ahand, aclient, buffer
+// Return      : NULL
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : send hand cards list from server to client
+// Bug         : No bug
+//============================================================================
+void Player::SendHandList(){
+	int temp = ahand.size();
 	char buffer[BUFSIZE];
-	send(client,&temp,sizeof(int),0);
+	send(aclient,&temp,sizeof(int),0);
 	for(int i=0;i<temp;i++){
-		strcpy(buffer,getHandName(i).c_str());
-		send(client,buffer,BUFSIZE,0);
+		strcpy(buffer,GetHandName(i).c_str());
+		send(aclient,buffer,BUFSIZE,0);
 	}
 }
-int Player::getDeckSize(){
-	return deck.size();
+//============================================================================
+// Name        : GetDeckSize()
+// Author      : LSH
+// Version     : 1.1
+// Param       : adeck
+// Return      : adeck.size()
+// Deprecated  : Using
+// See         : card.cpp
+// Todo        : GetDeckSize
+// Bug         : No bug
+//============================================================================
+int Player::GetDeckSize(){
+	return adeck.size();
 };
-
-void Player::discardHand(int pos){
-	Card card = hand[pos];
-	deque<Card>::iterator it = hand.begin();
+//============================================================================
+// Name        : DiscardHand()
+// Author      : LSH
+// Version     : 1.1
+// Param       : adeck,adiscard
+// Return      : NULL
+// Deprecated  : Using
+// See         : simulation.cpp
+// Todo        : card go hand to discard
+// Bug         : No bug
+//============================================================================
+void Player::DiscardHand(int pos){
+	Card card = ahand[pos];
+	deque<Card>::iterator it = ahand.begin();
 	it += pos;
-	discard.push_back(card);
-	hand.erase(it);
+	adiscard.push_back(card);
+	ahand.erase(it);
 }
 	
