@@ -46,18 +46,12 @@ void Simulation::subRun(int pos){
 	send(client[pos],buffer[pos],BUFSIZE,0);
 	while(state == 1);
 	send(client[pos],&pos,sizeof(int),0);
-	//sendPlayerList(pos);
-	//sendShopList(pos);
 	while(state == 2);
 	player[pos].initTurn();
 	while(1){
 		if(turn == pos){
 			int temp = turn;
 			strcpy(buffer[pos],"Your Turn!");
-			//cout << "case1 : " << temp << ", " << pos << ", " << buffer[pos] << endl;
-			//cout << "------------" << endl;
-			//player[pos].printHand();
-			//cout << "------------" << endl;
 			send(client[pos],&temp,sizeof(int),0);
 			send(client[pos],buffer[pos],BUFSIZE,0);
 			sendPlayerList(pos);
@@ -81,7 +75,9 @@ void Simulation::subRun(int pos){
 							send(client[pos],&temp,sizeof(int),0);
 						}
 						else if(c->isAction()){
+							int tt = result;
 							result = c->cardAction(&player[pos],c->getName(),&shop);
+							player[pos].discardHand(tt);
 							player[pos].setAction(player[pos].getAction()-1);
 							action = player[pos].getAction();
 						}
