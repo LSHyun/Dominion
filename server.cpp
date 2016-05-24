@@ -48,9 +48,33 @@ class SubServer{
 	string name;
 	int people;
 };
+
+//============================================================================
+// Name        : MakeNewRoom()
+// Author      : SWH
+// Version     : 1.1
+// Param       :
+// Return      : NULL
+// Deprecated  : not using
+// See         :
+// Todo        : make new room
+// Bug         : No execute
+//===========================================================================
 void MainServer::MakeNewRoom(){
 	int number = GetEmptyPlace();
 };
+
+//============================================================================
+// Name        : Run()
+// Author      : SWH
+// Version     : 1.1
+// Param       : aserver, apclient aclient_size
+// Return      : NULL
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : make new room
+// Bug         :
+//===========================================================================
 void MainServer::Run(){
 	int number = GetEmptyClientNumber();
 	char buffer[20];
@@ -100,6 +124,17 @@ void MainServer::Run(){
 	}
 };
 
+//============================================================================
+// Name        : GetEmptyClientNumber()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apstatus
+// Return      : NULL
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : check can login client number
+// Bug         :
+//===========================================================================
 /* status = -1 : empty, 0 : wait client, 1 : running */
 int MainServer::GetEmptyClientNumber(){
 	
@@ -112,9 +147,31 @@ int MainServer::GetEmptyClientNumber(){
 	return -1;
 }
 
+//============================================================================
+// Name        : End()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apstatus
+// Return      : NULL
+// Deprecated  : not using
+// See         : server.cpp
+// Todo        : ending status
+// Bug         : No execute
+//===========================================================================
 void MainServer::End(){
 };
 
+//============================================================================
+// Name        : Init()
+// Author      : SWH
+// Version     : 1.1
+// Param       : apsimulation apname apstatus apclient
+// Return      : NULL
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : initialize server
+// Bug         :
+//===========================================================================
 void MainServer::Init(){
 	apsimulation = new Simulation;
 	apname = new string[CLIENTCOUNT];
@@ -126,9 +183,32 @@ void MainServer::Init(){
 	}
 };
 
+//============================================================================
+// Name        : GetEmptyPlace()
+// Author      : SWH
+// Version     : 1.1
+// Param       :
+// Return      : 0
+// Deprecated  : not using
+// See         : server.cpp
+// Todo        : ?
+// Bug         :
+//===========================================================================
 int MainServer::GetEmptyPlace(){
 	return 0;
 }
+
+//============================================================================
+// Name        : newConnection()
+// Author      : SWH
+// Version     : 1.1
+// Param       : client server
+// Return      : 0
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : client want new connection
+// Bug         :
+//===========================================================================
 //void* MainServer::newConnection(void *arg){
 void* newConnection(void *arg){
 	struct info *temp = (struct info*)arg;
@@ -200,12 +280,34 @@ void* newConnection(void *arg){
 	while(command != 3);
 };
 
+//============================================================================
+// Name        : simulationMainRun()
+// Author      : SWH
+// Version     : 1.1
+// Param       : simulation
+// Return      : NULL
+// Deprecated  : using
+// See         : server.cpp
+// Todo        : start simulation
+// Bug         :
+//===========================================================================
 void *simulationMainRun(void *arg){
 	cout << "Main run start" << endl;
 	Simulation *simulation = (Simulation *)arg;
 	simulation->MainRun();
 };
 
+//============================================================================
+// Name        : main()
+// Author      : SWH
+// Version     : 1.1
+// Param       : mainserver
+// Return      : NULL
+// Deprecated  : using
+// See         :
+// Todo        : is main
+// Bug         :
+//===========================================================================
 int main(){
 	MainServer mainServer;
 	mainServer.Init();
