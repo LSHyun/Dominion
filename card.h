@@ -6,6 +6,7 @@
 
 using namespace std;
 
+class Shop;
 class Player;
 class Card{
 private:
@@ -22,7 +23,7 @@ public:
 	cardType getType();
 	void initCardMap();
 	int cardStringToNumber(string cardName);
-	int cardAction(Player player, string cardName);
+	int cardAction(Player player, string cardName, Shop shop);
 	int actionAdventure(Player player);
 	int actionBureaucrat(Player player);
 	int actionCellar(Player player);
@@ -38,7 +39,7 @@ public:
 	int actionMine(Player player);
 	int actionMoat(Player player);
 	int actionMoneylender(Player player);
-	int actionRemodel(Player player);
+	int actionRemodel(Player player, Shop shop);
 	int actionSmithy(Player player);
 	int actionSpy(Player player);
 	int actionThief(Player player);

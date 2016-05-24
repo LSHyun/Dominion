@@ -25,6 +25,7 @@ void Simulation::mainRun(){
 	char buf[BUFSIZE] = "Game Start\0";
 	for(int i=0;i<number;i++){
 		player[i].initDeck();
+		player[i].setClient(client[i]);
 		strcpy(buffer[i],buf);
 	}
 	state = 1;
@@ -64,9 +65,9 @@ void Simulation::subRun(int pos){
 			sendHandList(pos);
 			int state = player[pos].getState();
 			//cout << "after assign state" << endl;
-			
+			send(client[pos],&state,sizeof(int),0);
 			if(state == ACTIONSTATE){
-				send(client[pos],&state,sizeof(int),0);
+				
 				int action = player[pos].getAction();
 				while(action > 0){
 					int result;
@@ -75,26 +76,33 @@ void Simulation::subRun(int pos){
 						recv(client[pos],&result,sizeof(int),0);
 						Card *c = player[pos].getHand(result);
 						if(c == NULL){
+							int temp = -1;
 							result = -1;
+							send(client[pos],&temp,sizeof(int),0);
 						}
 						else if(c->isAction()){
-							result = c->cardAction(player[pos],c->getName());
-							action = player[pos].getAction();	
+							result = c->cardAction(player[pos],c->getName(),shop);
+							player[pos].setAction(player[pos].getAction()-1);
+							action = player[pos].getAction();
 						}
 						else{
+							int temp = -1;
 							result = -1;
+							send(client[pos],&temp,sizeof(int),0);
 						}
 						send(client[pos],&result,sizeof(int),0);
-						
 					}
 					while(result == -1);
+					
 					send(client[pos],&action,sizeof(int),0);
 				}
+				state = BUYSTATE;
 			}
 			if(state == BUYSTATE){
-				send(client[pos],&state,sizeof(int),0);
+				//send(client[pos],&state,sizeof(int),0);
 				int money = player[pos].getMoney();
 				int buyCount = player[pos].getBuy();
+				cout << money << ", " << buyCount << endl;
 				int choose, result;
 				while(buyCount > 0){
 					send(client[pos],&money,sizeof(int),0);

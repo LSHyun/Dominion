@@ -1,11 +1,23 @@
+#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
 #include<cstdlib>
+#include<unistd.h>
+#include<pthread.h>
+#include<netdb.h>
+#include"serverClient.h"
 #include"card.h"
 #include"player.h"
+#include"shop.h"
 
 using namespace std;
 
 void Card::initCardMap(){
-	cardMap["Cellar"]= CELLAR;
+	cardMap["Cellar"] = CELLAR;
 	cardMap["Chapel"] = CHAPEL;
 	cardMap["Moat"] = MOAT;
 	cardMap["Chancellor"] = CHANCELLOR;
@@ -37,6 +49,7 @@ int Card::cardStringToNumber(string cardName){
 }
 
 void Card::setCard(string _name){
+	initCardMap();
 	cout << _name << endl;
 	int r = (rand() % TOTALACTION) + 1;
 	if(_name == "Copper"){
@@ -235,9 +248,9 @@ cardType Card::getType(){
 
 /* Input << player */
 /* Output >> -1: wrong action, 0: done, else: special case */
-int Card::cardAction(Player player, string cardName){
+int Card::cardAction(Player player, string cardName, Shop shop){
 	int r = cardStringToNumber(cardName);
-	player.setAction(player.getAction()-1);
+	cout << "cardaction in : " << cardName << ", out : " << r << endl;
 	switch(r){
 		case CELLAR:
 			return actionCellar(player);
@@ -264,7 +277,7 @@ int Card::cardAction(Player player, string cardName){
 		case MONEYLENDER:
 			return actionMoneylender(player);
 		case REMODEL:
-			return actionRemodel(player);
+			return actionRemodel(player, shop);
 		case SMITHY:
 			return actionSmithy(player);
 		case SPY:
@@ -294,65 +307,98 @@ int Card::cardAction(Player player, string cardName){
 	}
 }
 int Card::actionAdventure(Player player){
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.revealDeck(TREASURE,2,HAND,DISCARD);
 	return 0;
 };
 
 int Card::actionBureaucrat(Player player){
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.gainCard("Silver", 1, DECK);
 	return BUREAUCRAT;
 };
 
 int Card::actionCellar(Player player){
+	int client = player.getClient();
+	int temp = CELLAR;
+	send(client,&temp,sizeof(int),0);
+	recv(client,&temp,sizeof(int),0);
 	player.addAction(1);
-	int count = player.discardCard(INF);
+	int count = player.discardCard(temp);
 	player.drawCard(count);
 	return 0;
 };
 int Card::actionChancellor(Player player){
+	int client = player.getClient();
+	int temp = CHANCELLOR;
 	char choice;
+	send(client,&temp,sizeof(int),0);
+	recv(client,&choice,sizeof(char),0);
+	if(choice == 'y'){
+		player.discardDeck(player.getDeckSize());
+	}
 	player.addCoin(2);
-flagChancellor:
-	cout << "Discard Deck? (Y/n) ";
-	cin >> choice;
-	if(choice == 'y' || choice == 'Y'){
-		player.discardDeck(ALL);
-	}
-	else if(choice == 'n' || choice == 'N'){
-	}
-	else{
-		goto flagChancellor;
-	}
 	return 0;
 }
 int Card::actionChapel(Player player){
-	player.trashCard(0,4);
+	int client = player.getClient();
+	int temp = CHAPEL;
+	int count;
+	send(client,&temp,sizeof(int),0);
+	recv(client,&count,sizeof(int),0);
+	for(int i=0;i<count;i++){
+		player.sendHandList();
+		recv(client,&temp,sizeof(int),0);
+		player.trashCard(temp);
+	}
 	return 0;
 };
 int Card::actionCouncilroom(Player player){
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.drawCard(4);
 	player.addBuy(1);
 	return COUNCILROOM;
 };
 int Card::actionFeast(Player player){
-	player.gainCardChoose(1,5,DISCARD);
-	return 0;
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
+	//player.gainCardChoose(1,5,DISCARD);
+	return FEAST;
 };
 int Card::actionFestival(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.addAction(2);
 	player.addBuy(1);
 	player.addCoin(2);
 	return 0;
 };
 int Card::actionLaboratory(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.drawCard(2);
 	player.addAction(1);
 	return 0;
 };
 int Card::actionLibrary(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	while (player.getCardCount() < 7) {
 		Card *top = player.getDeckFront();
 		if (top->isAction()) {
+/*
+			temp = 1;
+			send(client,&temp,sizeof(int),0);
 			char choice;
 			cout << "Card Name : " << top->getName() << endl;
 			cout << "Set aside this card?(y/n)";
@@ -366,6 +412,8 @@ int Card::actionLibrary(Player player) {
 			else {
 
 			}
+*/
+			player.discardDeck(1);
 		}
 		else {
 			player.drawCard(1);
@@ -374,6 +422,9 @@ int Card::actionLibrary(Player player) {
 	return 0;
 }
 int Card::actionMarket(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.drawCard(1);
 	player.addAction(1);
 	player.addBuy(1);
@@ -381,42 +432,107 @@ int Card::actionMarket(Player player) {
 	return 0;
 };
 int Card::actionMilitia(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.addCoin(1);
 	return MILITIA;
 };
 int Card::actionMine(Player player) {
-	int value = player.trashCard(TREASURE,1);
-	if (value != -1) {
-		player.gainCard(TREASURE, 1, value + 3, HAND);
+	int client = player.getClient();
+	int temp = MINE;
+	send(client,&temp,sizeof(int),0);
+	player.sendHandList();
+	recv(client,&temp,sizeof(int),0);
+	if(temp < 0 || temp >= player.getHandSize()){
+	}
+	else if(player.getHandName(temp) == "Copper"){
+		Card c;
+		c.setCard("Silver");
+		player.trashCard(temp);
+		player.gainCard(c,1,HAND);
+	}
+	else if(player.getHandName(temp) == "Silver"){
+		Card c;
+		c.setCard("Gold");
+		player.trashCard(temp);
+		player.gainCard(c,1,HAND);
+	}
+	else if(player.getHandName(temp) == "Gold"){
+		Card c;
+		c.setCard("Gold");
+		player.trashCard(temp);
+		player.gainCard(c,1,HAND);
+	}
+	else{
 	}
 	return 0;
 }
 int Card::actionMoat(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.drawCard(2);
 	return 0;
 }
 int Card::actionMoneylender(Player player) {
-	int value = player.trashCard("Copper", 1);
-	if (value != -1) {
-		player.addCoin(3);
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
+	for(int i=0;i<player.getHandSize();i++){
+		if(player.getHandName(i) == "Copper"){
+			player.trashCard(i);
+			player.addCoin(3);
+			break;
+		}
 	}
 	return 0;
 }
-int Card::actionRemodel(Player player) {
+int Card::actionRemodel(Player player, Shop shop) {
+	int client = player.getClient();
+	int temp = REMODEL;
+	send(client,&temp,sizeof(int),0);
+/*
 	int value = player.trashCard(ANY, 1);
 	if (value != -1) {
 		player.gainCard(ANY, 1, value + 2, DISCARD);
 	}
+*/
+	player.sendHandList();
+	recv(client,&temp,sizeof(int),0);
+	int value = player.getHand(temp)->getCost() + 2;
+	int choose;
+	player.trashCard(temp);
+
+	send(client,&value,sizeof(int),0);
+	recv(client,&choose,sizeof(int),0);
+	if(choose == 0){ // turn end
+	}
+	else{
+		choose--;
+		if(value >= shop.getCardCost(choose) && shop.getCardRemain(choose) > 0){
+			player.gainCard(shop.getCard(choose), 1, DISCARD);
+			shop.updateCardRemain(choose,-1);
+		}
+		else{
+		}
+	}
 	return 0;
 }
 int Card::actionSmithy(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.drawCard(3);
 	return 0;
 }
 int Card::actionSpy(Player player){
+	int client = player.getClient();
+	int temp = SPY;
+	send(client,&temp,sizeof(int),0);
 	player.drawCard(1);
 	player.addAction(1);
-	Card *top = player.getDeckFront();
+/*
 	char choice;
 	cout << "Reveal your deck : " << top->getName() << endl;
 	cout << "Discard or Put back?(d/p)";
@@ -428,29 +544,48 @@ int Card::actionSpy(Player player){
 	}
 	else {
 	}
+*/
 	return SPY;
 }
 int Card::actionThief(Player player) {
+	int client = player.getClient();
+	int temp = THIEF;
+	send(client,&temp,sizeof(int),0);
 	return THIEF;
 }
 int Card::actionThroneroom(Player player) {
+	int client = player.getClient();
+	int temp = THRONEROOM;
+	send(client,&temp,sizeof(int),0);
 	return THRONEROOM;
 }
 int Card::actionViliage(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.drawCard(1);
 	player.addAction(2);
 	return 0;
 }
 int Card::actionWitch(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.drawCard(2);
 	return WITCH;
 }
 int Card::actionWoodcutter(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.addCoin(2);
 	player.addBuy(1);
 	return 0;
 }
 int Card::actionWorkshop(Player player) {
+	int client = player.getClient();
+	int temp = 0;
+	send(client,&temp,sizeof(int),0);
 	player.gainCard(ANY, 1, 4, DISCARD);
 	return 0;
 }

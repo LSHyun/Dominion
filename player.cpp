@@ -1,5 +1,15 @@
+#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
 #include<cstdlib>
-
+#include<unistd.h>
+#include<pthread.h>
+#include<netdb.h>
+#include"serverClient.h"
 #include"player.h"
 
 void Player::initTurn(){
@@ -126,32 +136,50 @@ string Player::getName(){
 };
 
 void Player::addAction(int count){
-
+	action += count;
 };
 
 void Player::drawCard(int count){
+	for(int i=0;i<count;i++){
+		if(deck.size() == 0){
+			shuffle();
+		}
+		if(deck.size() == 0){
+			break;
+		}
+		Card c = deck.front();
+		hand.push_back(c);
+		deck.pop_front();
+	}
 };
 
 void Player::addCoin(int count){
+	coin += count;
 };
 
 void Player::discardDeck(int count){
+	for(int i=0;i<count;i++){
+		Card c = deck.front();
+		discard.push_back(c);
+		deck.pop_front();
+	}
 };
 
-int Player::trashCard(cardType type, int count){
-
+void Player::trashCard(int pos){
+	deque<Card>::iterator it = hand.begin();
+	it += pos;
+	hand.erase(it);
 };
-
-int Player::trashCard(string name, int count){
-}; 
 
 void Player::addBuy(int count){
+	buy += count;
 };
 
 Card* Player::getDeckFront(){
 };
 
 int Player::getCardCount(){
+	return hand.size();
 };
 
 void Player::gainCardChoose(int count, int cost, place to){
@@ -198,6 +226,23 @@ void Player::shuffle(){
 		deck.push_back(card);
 		discard.pop_front();
 	}
+	int temp[deck.size()];
+	Card tempCard;
+	for(int i=0;i<deck.size();i++){
+		temp[i] = rand() % 65536;
+	}
+	for(int i=0;i<deck.size()-1;i++){
+		for(int k=1;k<deck.size();k++){
+			if(temp[i] < temp[k]){
+				int t = temp[i];
+				temp[i] = temp[k];
+				temp[k] = t;
+				tempCard = deck[i];
+				deck[i] = deck[k];
+				deck[k] = tempCard;
+			}
+		}
+	}
 };
 
 void Player::discardHand(){
@@ -218,4 +263,22 @@ int Player::getAction(){
 };
 void Player::setAction(int _action){
 	action = _action;
+};
+void Player::setClient(int _client){
+	client = _client;
+};
+int Player::getClient(){
+	return client;
+};
+void Player::sendHandList(){
+	int temp = hand.size();
+	char buffer[BUFSIZE];
+	send(client,&temp,sizeof(int),0);
+	for(int i=0;i<temp;i++){
+		strcpy(buffer,getHandName(i).c_str());
+		send(client,buffer,BUFSIZE,0);
+	}
+}
+int Player::getDeckSize(){
+	return deck.size();
 };
